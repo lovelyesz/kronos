@@ -1,0 +1,32 @@
+server:
+  port: 1334
+spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+    static-path-pattern: /static/**
+  datasource:
+    url: jdbc:mysql://10.200.46.238:3306/meson?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+redisson:
+  sentinel:
+    master-name: paygate
+    sentinel-addresses:
+      - config://ds.redis3-3.yunzong:26379
+      - config://ds.redis3-2.yunzong:26379
+      - config://ds.redis3-1.yunzong:26379
+
+kubernetes:
+  service-api: http://10.200.46.239:8080
+  image: executor:statement
+  image-pull-policy: IfNotPresent
+  restart-policy: OnFailure
+  api-version: batch/v2alpha1
+  log-path: /data/application/logs/meson/
+logging:
+  file:
+    path: /data/application/logs/meson/

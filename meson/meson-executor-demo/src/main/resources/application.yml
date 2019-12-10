@@ -1,0 +1,21 @@
+server:
+  port: 8819
+
+redisson:
+  sentinel:
+    master-name: paygate
+    sentinel-addresses:
+      - config://ds.redis3-3.yunzong:26379
+      - config://ds.redis3-2.yunzong:26379
+      - config://ds.redis3-1.yunzong:26379
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://10.200.46.238:3306/meson_demo
+  profiles:
+    active: @profile.env@
+logging:
+  file:
+    path: /data/application/logs/meson/
