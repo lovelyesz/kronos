@@ -24,7 +24,7 @@ kubernetes:
   service-api: http://10.200.46.239:8080
   image: executor:statement
   image-pull-policy: IfNotPresent
-  restart-policy: OnFailure
+  restart-policy: Never
   api-version: batch/v2alpha1
   log-path: /data/application/logs/meson/
 logging:
