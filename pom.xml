@@ -11,7 +11,7 @@
     <modules>
         <module>meson-commons</module>
         <module>meson-schedule</module>
-        <!--<module>meson-mvc</module>-->
+        <module>meson-mvc</module>
         <module>meson-execute</module>
         <module>meson-alert</module>
     </modules>
