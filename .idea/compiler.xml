@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="meson-alert" />
+        <module name="meson-commons" />
+        <module name="meson-execute" />
+        <module name="meson-mvc" />
+        <module name="meson-schedule" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="meson-alert" target="8" />
+      <module name="meson-commons" target="1.5" />
+      <module name="meson-execute" target="7" />
+      <module name="meson-mvc" target="8" />
+      <module name="meson-schedule" target="8" />
+      <module name="meson2" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
