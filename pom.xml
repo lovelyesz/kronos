@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yz.meson</groupId>
-    <artifactId>meson</artifactId>
+    <groupId>com.yz.kronos</groupId>
+    <artifactId>kronos</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
-        <module>meson-commons</module>
-        <module>meson-schedule</module>
-        <module>meson-mvc</module>
-        <module>meson-execute</module>
-        <module>meson-alert</module>
+        <module>kronos-commons</module>
+        <module>kronos-schedule</module>
+        <module>kronos-mvc</module>
+        <module>kronos-execute</module>
+        <module>kronos-alert</module>
     </modules>
     <properties>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
