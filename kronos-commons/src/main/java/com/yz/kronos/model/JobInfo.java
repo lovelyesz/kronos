@@ -1,4 +1,4 @@
-package com.yz.kronos.schedule.job;
+package com.yz.kronos.model;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;

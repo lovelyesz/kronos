@@ -3,7 +3,7 @@ package com.yz.kronos.schedule.handle;
 import com.google.common.collect.Maps;
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.model.KubernetesConfig;
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import io.fabric8.kubernetes.api.model.*;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ public class StartJobHandle extends AbstractStartJobHandle {
 
     @Override
     public Map<String, String> labels(String execId) {
-        Map<String, String> labels = Maps.newHashMap();
+        Map<String, String> labels = new HashMap<>(4);
         labels.put(ExecuteConstant.KRONOS_EXECUTE_ID, execId);
         labels.put(ExecuteConstant.KRONOS_EXECUTE_SYNCHRONIZER_LABEL_NAME, jobInfo.getSynchronizerKey());
         return labels;
@@ -46,6 +46,7 @@ public class StartJobHandle extends AbstractStartJobHandle {
     protected List<EnvVar> env(String execId) {
         Map<String, String> env = new HashMap<>(4);
         env.put(ExecuteConstant.KRONOS_EXECUTOR_ENV_NAME,ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE + execId);
+        env.put(ExecuteConstant.KRONOS_EXECUTE_ID, execId);
         return env.entrySet().parallelStream().map(e ->
                 new EnvVarBuilder().withName(e.getKey())
                         .withValue(e.getValue()).build()).collect(Collectors.toList());

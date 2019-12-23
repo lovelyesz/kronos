@@ -1,6 +1,6 @@
 package com.yz.kronos.schedule.handle;
 
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import org.redisson.api.RedissonClient;
 
 /**

@@ -2,7 +2,7 @@ package com.yz.kronos.schedule.handle;
 
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.model.KubernetesConfig;
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;

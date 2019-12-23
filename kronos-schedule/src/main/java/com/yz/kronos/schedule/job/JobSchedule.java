@@ -1,6 +1,7 @@
 package com.yz.kronos.schedule.job;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yz.kronos.model.JobInfo;
 import com.yz.kronos.model.KubernetesConfig;
 import com.yz.kronos.schedule.handle.StartJobHandle;
 import com.yz.kronos.schedule.queue.JobQueue;
@@ -20,7 +21,7 @@ public interface JobSchedule {
      * @param config
      * @return execId
      */
-    Long schedule(Long flowId,JobInfo jobInfo,KubernetesConfig config);
+    Long schedule(Long flowId, JobInfo jobInfo, KubernetesConfig config);
 
     /**
      * 任务信息队列

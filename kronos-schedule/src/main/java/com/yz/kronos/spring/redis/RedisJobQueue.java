@@ -1,5 +1,6 @@
 package com.yz.kronos.spring.redis;
 
+import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.schedule.queue.JobQueue;
 import org.redisson.api.RBatch;
 import org.redisson.api.RBlockingQueue;
@@ -41,8 +42,10 @@ public class RedisJobQueue implements JobQueue {
         final RBlockingQueueAsync<Object> blockingQueue = batch.getBlockingQueue(keyName);
         for (int i = 0; i < size; i++) {
             blockingQueue.addAsync(s);
+            blockingQueue.expireAsync(ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
         }
         batch.execute();
+
     }
 
     /**
@@ -54,6 +57,7 @@ public class RedisJobQueue implements JobQueue {
     public void add(String keyName,String s) {
         final RBlockingQueue<Object> blockingQueue = redissonClient.getBlockingQueue(keyName);
         blockingQueue.add(s);
+        blockingQueue.expire(ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
     }
 
     /**

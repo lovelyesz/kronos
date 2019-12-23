@@ -7,7 +7,16 @@ package com.yz.kronos.execute;
  * @author lihonghong
  *
  */
-public interface IsolatedJavaJob extends JavaJob{
+public interface IsolatedJavaJob {
+
+    /**
+     * 执行业务
+     * @param index
+     * @param shareTotal
+     * @param execId
+     * @throws Exception
+     */
+    void execute(Integer index, Integer shareTotal, String execId) throws Exception ;
 
 
 }

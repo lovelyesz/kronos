@@ -1,7 +1,8 @@
 package com.yz.kronos.schedule.flow;
 
+import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.model.KubernetesConfig;
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import com.yz.kronos.schedule.job.JobSchedule;
 import com.yz.kronos.schedule.job.JobShutdown;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +60,8 @@ public class DefaultFlowManage extends AbstractFlowManage {
                             });
                     final long count = flowElements.parallelStream().mapToInt(FlowInfo.FlowElement::getSort).count();
                     jobProcessSynchronizer.init(synchronizerKey, (int) count);
-                    jobProcessSynchronizer.wait(synchronizerKey,1, TimeUnit.HOURS);
+                    jobProcessSynchronizer.wait(synchronizerKey, ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,
+                            ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
                 });
 
     }

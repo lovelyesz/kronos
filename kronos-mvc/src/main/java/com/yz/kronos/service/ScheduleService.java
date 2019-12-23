@@ -10,7 +10,7 @@ import com.yz.kronos.model.*;
 import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.FlowInfo;
 import com.yz.kronos.schedule.flow.FlowSchedule;
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;

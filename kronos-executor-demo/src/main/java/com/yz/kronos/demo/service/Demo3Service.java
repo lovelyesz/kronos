@@ -2,7 +2,7 @@ package com.yz.kronos.demo.service;
 
 import com.yz.kronos.demo.dao.UserDao;
 import com.yz.kronos.demo.model.UserInfo;
-import com.yz.kronos.execute.JobErrorHandle;
+import com.yz.kronos.execute.ExecuteErrorHandle;
 import com.yz.kronos.execute.IsolatedJavaJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  **/
 @Slf4j
 @Service
-public class Demo3Service implements IsolatedJavaJob, JobErrorHandle {
+public class Demo3Service implements IsolatedJavaJob, ExecuteErrorHandle {
 
     @Autowired
     UserDao userDao;

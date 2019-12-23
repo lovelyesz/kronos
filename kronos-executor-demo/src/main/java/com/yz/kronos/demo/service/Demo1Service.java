@@ -2,7 +2,7 @@ package com.yz.kronos.demo.service;
 
 import com.yz.kronos.demo.dao.UserDao;
 import com.yz.kronos.demo.model.UserInfo;
-import com.yz.kronos.execute.JobErrorHandle;
+import com.yz.kronos.execute.ExecuteErrorHandle;
 import com.yz.kronos.execute.IsolatedJavaJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Random;
  **/
 @Slf4j
 @Service
-public class Demo1Service implements IsolatedJavaJob, JobErrorHandle {
+public class Demo1Service implements IsolatedJavaJob, ExecuteErrorHandle {
 
 
     @Autowired

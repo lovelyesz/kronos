@@ -1,6 +1,6 @@
 package com.yz.kronos.schedule.flow;
 
-import com.yz.kronos.schedule.job.JobInfo;
+import com.yz.kronos.model.JobInfo;
 import lombok.Data;
 
 import java.util.List;
