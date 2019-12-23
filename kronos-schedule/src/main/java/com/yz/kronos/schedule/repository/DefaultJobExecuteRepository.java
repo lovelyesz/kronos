@@ -15,7 +15,7 @@ public class DefaultJobExecuteRepository implements JobExecuteRepository {
      * @return 执行id
      */
     @Override
-    public Long insert(Long flowId, Long jobId) {
+    public Long insert(Long flowId, Long jobId,Integer shareTotal) {
         return 0L;
     }
 }

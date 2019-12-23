@@ -1,14 +1,19 @@
 package com.yz.kronos.spring;
 
 import com.yz.kronos.model.KubernetesConfig;
-import com.yz.kronos.schedule.flow.FlowSchedule;
-import com.yz.kronos.schedule.flow.DefaultFlowSchedule;
-import com.yz.kronos.schedule.job.JobSchedule;
+import com.yz.kronos.schedule.flow.AbstractFlowManage;
+import com.yz.kronos.schedule.flow.DefaultFlowManage;
 import com.yz.kronos.schedule.job.DefaultJobSchedule;
-import com.yz.kronos.schedule.listener.*;
+import com.yz.kronos.schedule.job.DefaultJobShutdown;
+import com.yz.kronos.schedule.job.JobSchedule;
+import com.yz.kronos.schedule.job.JobShutdown;
+import com.yz.kronos.schedule.listener.DefaultEventHandlerManage;
+import com.yz.kronos.schedule.listener.EventHandlerManage;
+import com.yz.kronos.schedule.listener.JobProcessListener;
+import com.yz.kronos.schedule.listener.JobSynchronzeEventHandler;
 import com.yz.kronos.schedule.queue.JobQueue;
-import com.yz.kronos.schedule.repository.JobExecuteRepository;
 import com.yz.kronos.schedule.repository.DefaultJobExecuteRepository;
+import com.yz.kronos.schedule.repository.JobExecuteRepository;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import com.yz.kronos.spring.redis.RedisJobProcessSynchronizer;
 import com.yz.kronos.spring.redis.RedisJobQueue;
@@ -76,28 +81,28 @@ public class KronosAutoConfiguration {
     }
 
     /**
-     * 任务调度监听器
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public JobScheduleCycle jobScheduleListener(){
-        return new DefaultJobScheduleCycle();
-    }
-
-    /**
      * 任务调度器
      * @param kubernetesConfig
      * @param jobQueue
-     * @param jobScheduleCycle
      * @return
      */
     @Bean
     @ConditionalOnMissingBean
     public JobSchedule jobSchedule(KubernetesConfig kubernetesConfig,
-                                   JobQueue jobQueue, JobScheduleCycle jobScheduleCycle,
+                                   JobQueue jobQueue,
                                    JobExecuteRepository jobExecuteRepository){
-        return new DefaultJobSchedule(kubernetesConfig,jobQueue,jobScheduleCycle,jobExecuteRepository);
+        return new DefaultJobSchedule(kubernetesConfig,jobQueue,jobExecuteRepository);
+    }
+
+    /**
+     * 任务关停器
+     * @param jobQueue
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobShutdown jobShutdown(JobQueue jobQueue){
+        return new DefaultJobShutdown(jobQueue);
     }
 
     @Bean
@@ -119,9 +124,9 @@ public class KronosAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(JobSchedule.class)
-    public FlowSchedule flowSchedule(KubernetesConfig kubernetesConfig,
-                                     JobSchedule jobSchedule,JobProcessSynchronizer jobProcessSynchronizer){
-        return new DefaultFlowSchedule(kubernetesConfig,jobSchedule,jobProcessSynchronizer);
+    public AbstractFlowManage flowSchedule(KubernetesConfig kubernetesConfig,
+                                           JobSchedule jobSchedule, JobShutdown jobShutdown, JobProcessSynchronizer jobProcessSynchronizer){
+        return new DefaultFlowManage(kubernetesConfig,jobSchedule,jobProcessSynchronizer,jobShutdown);
     }
 
 }

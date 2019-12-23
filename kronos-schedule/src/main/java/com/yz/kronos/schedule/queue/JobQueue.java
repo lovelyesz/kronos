@@ -26,4 +26,10 @@ public interface JobQueue {
      */
     void add(String key,String s);
 
+    /**
+     * 清空队列
+     * @param key
+     */
+    void clear(String key);
+
 }

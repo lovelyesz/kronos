@@ -29,14 +29,6 @@ public abstract class AbstractStartJobHandle implements JobHandle {
     }
 
     /**
-     * 监听任务
-     */
-    @Override
-    public void listenJob() {
-
-    }
-
-    /**
      * 标签
      * @param execId
      * @return

@@ -56,5 +56,15 @@ public class RedisJobQueue implements JobQueue {
         blockingQueue.add(s);
     }
 
+    /**
+     * 清空队列
+     *
+     * @param key
+     */
+    @Override
+    public void clear(String key) {
+        redissonClient.getBlockingQueue(key).clear();
+    }
+
 
 }

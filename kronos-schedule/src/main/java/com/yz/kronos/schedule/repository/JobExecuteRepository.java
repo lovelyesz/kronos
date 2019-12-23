@@ -11,8 +11,9 @@ public interface JobExecuteRepository {
      * 存储任务执行记录
      * @param flowId 工作流id
      * @param jobId 任务id
+     * @param shareTotal
      * @return 执行id
      */
-    Long insert(Long flowId ,Long jobId);
+    Long insert(Long flowId ,Long jobId,Integer shareTotal);
 
 }

@@ -6,14 +6,11 @@ import com.yz.kronos.dao.JobInfoRepository;
 import com.yz.kronos.dao.JobRelationRepository;
 import com.yz.kronos.dao.NamespaceRepository;
 import com.yz.kronos.enu.FlowState;
-import com.yz.kronos.enu.JobState;
 import com.yz.kronos.model.*;
-import com.yz.kronos.schedule.config.JobExecutor;
 import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.FlowInfo;
 import com.yz.kronos.schedule.flow.FlowSchedule;
 import com.yz.kronos.schedule.job.JobInfo;
-import com.yz.kronos.util.ExecuteUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -133,7 +130,7 @@ public class ScheduleService {
 //        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
 //        //更新工作流状态
 //        flowInfoRepository.save(flowInfoModel);
-//        log.warn("kronos flow is stopped flow:{}",flowId);
+        log.warn("kronos flow is stopped flow:{}",flowId);
     }
 
 }

@@ -18,10 +18,5 @@ public interface JobHandle {
      */
     void stopJob();
 
-    /**
-     * 监听任务
-     */
-    void listenJob();
-
 
 }

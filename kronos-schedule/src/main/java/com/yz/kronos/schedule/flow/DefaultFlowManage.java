@@ -3,9 +3,8 @@ package com.yz.kronos.schedule.flow;
 import com.yz.kronos.model.KubernetesConfig;
 import com.yz.kronos.schedule.job.JobInfo;
 import com.yz.kronos.schedule.job.JobSchedule;
-import com.yz.kronos.schedule.repository.JobExecuteRepository;
+import com.yz.kronos.schedule.job.JobShutdown;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
-import com.yz.kronos.util.ExecuteUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -20,17 +19,20 @@ import java.util.stream.Collectors;
  * @date 2019-12-23
  **/
 @Slf4j
-public class DefaultFlowSchedule implements FlowSchedule {
+public class DefaultFlowManage extends AbstractFlowManage {
 
     KubernetesConfig config;
     JobSchedule jobSchedule;
     JobProcessSynchronizer jobProcessSynchronizer;
+    JobShutdown jobShutdown;
 
-    public DefaultFlowSchedule(KubernetesConfig config, JobSchedule jobSchedule,
-                               JobProcessSynchronizer jobProcessSynchronizer) {
+    public DefaultFlowManage(KubernetesConfig config, JobSchedule jobSchedule,
+                             JobProcessSynchronizer jobProcessSynchronizer,
+                             JobShutdown jobShutdown) {
         this.config = config;
         this.jobSchedule = jobSchedule;
         this.jobProcessSynchronizer = jobProcessSynchronizer;
+        this.jobShutdown = jobShutdown;
     }
 
     /**
@@ -54,7 +56,7 @@ public class DefaultFlowSchedule implements FlowSchedule {
                                 final JobInfo jobInfo = flowElement.getJobInfo();
                                 jobInfo.setSynchronizerKey(synchronizerKey);
                                 jobInfo.setJobId(flowElement.getJobId());
-                                jobSchedule.schedule(flowInfo.getFlowId(), jobInfo);
+                                jobSchedule.schedule(flowInfo.getFlowId(), jobInfo,config);
                             });
                     final long count = flowElements.parallelStream().mapToInt(FlowInfo.FlowElement::getSort).count();
                     jobProcessSynchronizer.init(synchronizerKey, (int) count);
@@ -63,9 +65,14 @@ public class DefaultFlowSchedule implements FlowSchedule {
 
     }
 
+    /**
+     * 任务关停
+     *
+     * @param execIds
+     */
     @Override
-    public KubernetesConfig config() {
-        return config;
+    public void shutdown(List<String> execIds) {
+        execIds.forEach(execId->jobShutdown.shutdown(execId,config));
     }
 
 }

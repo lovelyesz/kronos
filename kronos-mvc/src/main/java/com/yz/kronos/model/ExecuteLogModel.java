@@ -37,5 +37,14 @@ public class ExecuteLogModel {
 
     private String remark;
 
+    @Column(updatable = false)
+    private Integer shareTotal;
+
+    private Integer activeCount;
+
+    private Integer succeedCount;
+
+    private Integer failedCount;
+
 
 }
