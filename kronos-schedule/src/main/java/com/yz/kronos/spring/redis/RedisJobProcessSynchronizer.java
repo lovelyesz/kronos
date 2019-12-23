@@ -1,22 +1,22 @@
-package com.yz.kronos.config;
+package com.yz.kronos.spring.redis;
 
-import com.yz.kronos.schedule.ScheduleSynchronizer;
+import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import org.redisson.api.RCountDownLatch;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author shanchong
- * @date 2019-11-13
+ * @date 2019-12-20
  **/
-@Component
-public class RedisScheduleSynchronizer implements ScheduleSynchronizer {
+public class RedisJobProcessSynchronizer implements JobProcessSynchronizer {
 
-    @Autowired
     RedissonClient redissonClient;
+
+    public RedisJobProcessSynchronizer(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
 
     @Override
     public void init(String key, int count) {
@@ -40,4 +40,13 @@ public class RedisScheduleSynchronizer implements ScheduleSynchronizer {
         }
     }
 
+    /**
+     * 清空同步器
+     *
+     * @param key
+     */
+    @Override
+    public void delete(String key) {
+        redissonClient.getCountDownLatch(key).delete();
+    }
 }

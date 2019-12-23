@@ -41,7 +41,7 @@ public class FlowControllerTest {
                 .param("flowName", "测试工作流A")
                 .param("namespaceId","1")
                 .param("cron","0 0/10 * * * ?")
-                .param("state","0");
+                .param("status","0");
         final MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
         System.out.println(response.getContentAsString());
     }
@@ -53,7 +53,7 @@ public class FlowControllerTest {
                 .param("flowName", "测试工作流A")
                 .param("namespaceId","1")
                 .param("cron","0 0/10 * * * ?")
-                .param("state","0");
+                .param("status","0");
         final MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
         System.out.println(response.getContentAsString());
     }

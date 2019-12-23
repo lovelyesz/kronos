@@ -3,6 +3,7 @@ package com.yz.kronos.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author shanchong
@@ -23,8 +24,12 @@ public class FlowInfoModel extends BaseModel{
 
     private String cron;
 
-    private Integer state;
+    @Column(name = "`status`")
+    private Integer status;
 
     private Integer isDelete;
+
+    @Transient
+    List<JobInfoModel> jobList;
 
 }

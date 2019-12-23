@@ -1,13 +1,13 @@
-package com.yz.kronos.schedule;
+package com.yz.kronos.schedule.synchronizer;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * 调度同步器
+ * 任务进程同步器
  * @author shanchong
- * @date 2019-11-12
+ * @date 2019-12-20
  **/
-public interface ScheduleSynchronizer {
+public interface JobProcessSynchronizer {
 
     /**
      * 调度同步初始
@@ -29,5 +29,11 @@ public interface ScheduleSynchronizer {
      * @param unit
      */
     void wait(String key,long time, TimeUnit unit);
+
+    /**
+     * 清空同步器
+     * @param key
+     */
+    void delete(String key);
 
 }

@@ -4,6 +4,7 @@ import com.yz.kronos.dao.ExecuteLogRepository;
 import com.yz.kronos.enu.JobState;
 import com.yz.kronos.model.ExecuteLogModel;
 import com.yz.kronos.schedule.config.JobExecutor;
+import com.yz.kronos.schedule.repository.JobExecuteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  * @date 2019-11-13
  **/
 @Service
-public class ExecuteLogService {
+public class ExecuteLogService implements JobExecuteRepository {
 
     @Autowired
     ExecuteLogRepository executeLogRepository;
@@ -52,5 +53,17 @@ public class ExecuteLogService {
 
     public List<ExecuteLogModel> list(ExecuteLogModel model){
         return executeLogRepository.findAll(Example.of(model));
+    }
+
+    @Override
+    public Long insert(Long flowId, Long jobId) {
+        ExecuteLogModel executeLogModel = new ExecuteLogModel();
+        executeLogModel.setCreateTime(new Date());
+        executeLogModel.setFlowId(flowId);
+        executeLogModel.setJobId(jobId);
+        executeLogModel.setState(JobState.INIT.code());
+        executeLogModel.setRemark(JobState.INIT.desc());
+        executeLogRepository.save(executeLogModel);
+        return executeLogModel.getId();
     }
 }

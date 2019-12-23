@@ -4,6 +4,7 @@ package com.yz.kronos.dao;
 import com.yz.kronos.model.JobInfoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,6 +13,6 @@ import java.util.List;
  **/
 public interface JobInfoRepository extends JpaRepository<JobInfoModel,Long> {
 
-    List<JobInfoModel> findByIdIn(List<Long> ids);
+    List<JobInfoModel> findByIdIn(Collection<Long> ids);
 
 }

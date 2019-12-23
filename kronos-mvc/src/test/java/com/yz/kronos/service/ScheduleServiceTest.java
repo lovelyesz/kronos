@@ -15,6 +15,6 @@ public class ScheduleServiceTest {
 
     @org.junit.Test
     public void runFlow() {
-        scheduleService.runFlow(1l);
+        scheduleService.runFlow(4l);
     }
 }

@@ -12,5 +12,12 @@
     <artifactId>kronos-commons</artifactId>
     <version>1.0.0</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>5.5.1</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -29,4 +29,11 @@ public class JobInfoModel extends BaseModel {
 
     private Integer isDelete;
 
+    @Transient
+    private Integer shareTotal;
+    @Transient
+    private Integer sort;
+    @Transient
+    private Long flowId;
+
 }

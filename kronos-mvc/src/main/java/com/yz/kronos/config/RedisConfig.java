@@ -19,7 +19,7 @@ public class RedisConfig {
 
 //    @Bean
 //    public RedissonClient redissonClient(RedissonProperties redissonProperties){
-//        final Config config = new Config();
+//        final KubeConfig config = new KubeConfig();
 //        final SentinelServersConfig sentinelServersConfig = config.useSentinelServers();
 //        sentinelServersConfig.setMasterName(redissonProperties.getMasterName());
 //        sentinelServersConfig.setDatabase(1);

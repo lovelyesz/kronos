@@ -16,28 +16,28 @@ public class ExecuteUtil {
      * @return
      */
     public static String getExecId(Long execId,Long flowId,Long jobId){
-        return execId+":"+flowId+":"+jobId;
+        return execId+"-"+flowId+"-"+jobId;
     }
 
-    /**
-     * 获取同步器的KEY
-     * @param execId
-     * @param flowId
-     * @param jobId
-     * @return
-     */
-    public static String getSynchronizerKey(Long execId,Long flowId,Long jobId){
-        return getSynchronizerKey(getExecId(execId, flowId, jobId).replaceAll(":","-"));
-    }
+//    /**
+//     * 获取同步器的KEY
+//     * @param execId
+//     * @param flowId
+//     * @param jobId
+//     * @return
+//     */
+//    public static String getSynchronizerKey(Long execId,Long flowId,Long jobId){
+//        return getSynchronizerKey(getExecId(execId, flowId, jobId).replaceAll(":","-"));
+//    }
 
-    /**
-     * 获取同步器的KEY
-     * @param execId
-     * @return
-     */
-    public static String getSynchronizerKey(String execId){
-        return ExecuteConstant.KRONOS_EXECUTOR_SYNCHRONIZER + execId;
-    }
+//    /**
+//     * 获取同步器的KEY
+//     * @param execId
+//     * @return
+//     */
+//    public static String getSynchronizerKey(String execId){
+//        return ExecuteConstant.KRONOS_EXECUTOR_SYNCHRONIZER + execId;
+//    }
 
 
 }

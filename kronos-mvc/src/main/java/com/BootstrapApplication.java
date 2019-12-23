@@ -2,9 +2,8 @@ package com;
 
 import com.yz.kronos.config.CommandLineServer;
 import com.yz.kronos.quartz.SchedulerFactory;
-import com.yz.kronos.schedule.JobProcessListener;
-import com.yz.kronos.schedule.ScheduleSynchronizer;
-import com.yz.kronos.schedule.config.KubernetesConfig;
+import com.yz.kronos.schedule.listener.JobProcessListener;
+import com.yz.kronos.model.KubernetesConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -40,11 +39,7 @@ public class BootstrapApplication {
         return new CommandLineServer(threadPoolTaskExecutor);
     }
 
-    @Bean(initMethod = "run")
-    public JobProcessListener jobProcessListener(KubernetesConfig kubernetesConfig,
-                                                 ScheduleSynchronizer scheduleSynchronizer){
-        return new JobProcessListener(kubernetesConfig,scheduleSynchronizer);
-    }
+
 
 
 }

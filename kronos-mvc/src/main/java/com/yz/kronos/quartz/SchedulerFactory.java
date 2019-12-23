@@ -26,7 +26,7 @@ public class SchedulerFactory {
         this.scheduler = scheduler;
         scheduler.start();
         //可执行的工作流 list
-        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByState(FlowState.RUNNABLE.code());
+        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByStatus(FlowState.RUNNABLE.code());
         flowInfoModelList.forEach(flowInfoModel-> {
             try {
                 addJob(flowInfoModel);
