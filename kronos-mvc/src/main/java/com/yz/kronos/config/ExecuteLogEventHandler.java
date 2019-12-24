@@ -50,8 +50,7 @@ public class ExecuteLogEventHandler implements ResourceEventHandler<Job> {
         JobStatus status = newObj.getStatus();
         Map<String, String> labels = newObj.getMetadata().getLabels();
         final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
-        final Long execLogId = ExecuteUtil.getExecLogId(execId);
-        executeLogService.update(execLogId,status);
+        executeLogService.update(Long.valueOf(execId),status);
     }
 
     /**

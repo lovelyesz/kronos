@@ -43,11 +43,11 @@ public interface JobSchedule {
             final Integer shareTotal = jobInfo.getShareTotal();
             //记录执行日志
             final Long execId = repository().insert(flowId, jobInfo.getJobId(),shareTotal);
-            final String execId1 = ExecuteUtil.getExecId(execId, flowId, jobInfo.getJobId());
-            queue.add(config.getExecutorQueueNamePre()+execId1,
+//            final String execId1 = ExecuteUtil.getExecId(execId, flowId, jobInfo.getJobId());
+            queue.add(config.getExecutorQueueNamePre()+execId,
                     JSONObject.toJSONString(jobInfo),shareTotal);
             final StartJobHandle startJobHandle = new StartJobHandle(config, jobInfo);
-            startJobHandle.startJob(execId1);
+            startJobHandle.startJob(execId.toString());
             return execId;
         }
     }

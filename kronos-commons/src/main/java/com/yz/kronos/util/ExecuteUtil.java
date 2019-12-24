@@ -1,6 +1,5 @@
 package com.yz.kronos.util;
 
-import com.yz.kronos.ExecuteConstant;
 
 /**
  * @author shanchong
@@ -8,6 +7,7 @@ import com.yz.kronos.ExecuteConstant;
  **/
 public class ExecuteUtil {
 
+    private static String spliter = "_";
     /**
      * 执行id+工作流id+任务id
      * @param execId
@@ -16,19 +16,19 @@ public class ExecuteUtil {
      * @return
      */
     public static String getExecId(Long execId,Long flowId,Long jobId){
-        return execId+"-"+flowId+"-"+jobId;
+        return execId+spliter+flowId+spliter+jobId;
     }
 
     public static Long getExecLogId(String execId){
-        return Long.valueOf(execId.split("-")[0]);
+        return Long.valueOf(execId.split(spliter)[0]);
     }
 
     public static Long getFlowId(String execId){
-        return Long.valueOf(execId.split("-")[1]);
+        return Long.valueOf(execId.split(spliter)[1]);
     }
 
     public static Long getJobId(String execId){
-        return Long.valueOf(execId.split("-")[2]);
+        return Long.valueOf(execId.split(spliter)[2]);
     }
 
 }

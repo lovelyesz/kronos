@@ -49,6 +49,7 @@ public class DefaultFlowManage extends AbstractFlowManage {
                 .forEach(sort->{
                     final List<FlowInfo.FlowElement> flowElements = sortJobListMap.getOrDefault(sort,new ArrayList<>());
                     final String executorSynchronizerNamePre = config.getExecutorSynchronizerNamePre();
+                    //同步器的key
                     String synchronizerKey = executorSynchronizerNamePre + System.currentTimeMillis() + "_" + sort;
                     //sort相同的时候任务并行
                     flowElements.parallelStream()

@@ -30,7 +30,7 @@ kronos:
   api-version: v1
   log-path: /data/application/logs/kronos/
   resync-period-in-millis: 60000
-  executor-queue-name-pre: "KRONOS_EXECUTOR_QUEUE_NAME_PRE:"
+  executor-queue-name-pre: "KRONOS_EXECUTOR_QUEUE_NAME:"
   executor-synchronizer-name-pre: "KRONOS_EXECUTOR_SYNCHRONIZERNAME_"
 logging:
   file:

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class ExecuteConstant {
 
-    public static String KRONOS_EXECUTOR_QUEUE_NAME_PRE = "KRONOS_EXECUTOR_QUEUE_NAME_PRE:";
+    public static String KRONOS_EXECUTOR_QUEUE_NAME_PRE = "KRONOS_EXECUTOR_QUEUE_NAME:";
 
     public static String KRONOS_EXECUTOR_ENV_NAME = "KRONOS_EXECUTOR_ENV_NAME";
 
@@ -23,7 +23,7 @@ public class ExecuteConstant {
 
     public static String KRONOS_EXECUTE_SYNCHRONIZER_LABEL_NAME = "SYNCHRONIZER";
 
-    public static String KRONOS_EXECUTE_ID = "exec-id";
+    public static String KRONOS_EXECUTE_ID = "EXECID";
 
     public static String KRONOS_VOLUME_NAME = "kronos-logfile";
 }
