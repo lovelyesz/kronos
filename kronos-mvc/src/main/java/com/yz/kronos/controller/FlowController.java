@@ -50,7 +50,7 @@ public class FlowController {
         return flowInfoService.get(id);
     }
 
-    @PostMapping(value = "/run/{id}")
+    @PostMapping(value = "/schedule/{id}")
     public CallResult run(@PathVariable Long id){
         flowInfoService.schedule(id);
         return CallResult.builder()
