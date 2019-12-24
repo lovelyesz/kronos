@@ -1,12 +1,11 @@
 package com.yz.kronos.schedule.job;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yz.kronos.model.JobInfo;
-import com.yz.kronos.model.KubernetesConfig;
+import com.yz.kronos.JobInfo;
+import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.handle.StartJobHandle;
 import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
-import com.yz.kronos.util.ExecuteUtil;
 
 /**
  * kubernetes Job调度，任务被调度后k8s将异步进行执行，调度执行完成并不是任务执行完成

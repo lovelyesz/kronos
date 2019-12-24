@@ -1,5 +1,7 @@
 server:
   port: 1334
+  servlet:
+    context-path: /kronos
 spring:
   mvc:
     view:

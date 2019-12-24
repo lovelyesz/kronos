@@ -10,11 +10,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ScheduleServiceTest {
 
     @Autowired
-    ScheduleService scheduleService;
+    FlowInfoService flowInfoService;
 
 
     @org.junit.Test
     public void runFlow() {
-        scheduleService.runFlow(4l);
+        flowInfoService.schedule(4l);
     }
 }

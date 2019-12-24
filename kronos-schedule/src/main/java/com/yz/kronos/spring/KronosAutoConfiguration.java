@@ -1,6 +1,6 @@
 package com.yz.kronos.spring;
 
-import com.yz.kronos.model.KubernetesConfig;
+import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.DefaultFlowManage;
 import com.yz.kronos.schedule.job.DefaultJobSchedule;
@@ -124,7 +124,7 @@ public class KronosAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(JobSchedule.class)
-    public AbstractFlowManage flowSchedule(KubernetesConfig kubernetesConfig,
+    public AbstractFlowManage flowManage(KubernetesConfig kubernetesConfig,
                                            JobSchedule jobSchedule, JobShutdown jobShutdown, JobProcessSynchronizer jobProcessSynchronizer){
         return new DefaultFlowManage(kubernetesConfig,jobSchedule,jobProcessSynchronizer,jobShutdown);
     }

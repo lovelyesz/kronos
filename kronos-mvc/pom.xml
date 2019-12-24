@@ -56,6 +56,11 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
+            <groupId>com.yz.kronos</groupId>
+            <artifactId>kronos-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz-jobs</artifactId>
             <version>2.3.2</version>

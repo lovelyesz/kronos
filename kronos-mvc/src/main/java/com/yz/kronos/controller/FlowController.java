@@ -4,7 +4,6 @@ import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.model.CallResult;
 import com.yz.kronos.model.FlowInfoModel;
 import com.yz.kronos.service.FlowInfoService;
-import com.yz.kronos.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +20,10 @@ public class FlowController {
 
     @Autowired
     FlowInfoService flowInfoService;
-    @Autowired
-    ScheduleService scheduleService;
 
     @GetMapping(value = "/list")
-    public List<FlowInfoModel> list(FlowInfoModel flowInfoModel){
-        return flowInfoService.list(flowInfoModel);
+    public List<FlowInfoModel> list(Long namespaceId){
+        return flowInfoService.list(namespaceId);
     }
 
     @PostMapping(value = "/save")
@@ -55,7 +52,7 @@ public class FlowController {
 
     @PostMapping(value = "/run/{id}")
     public CallResult run(@PathVariable Long id){
-        scheduleService.runFlow(id);
+        flowInfoService.schedule(id);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
                 .message(CallResultConstant.SUCCESS_MESSAGE)
@@ -64,7 +61,7 @@ public class FlowController {
 
     @PostMapping(value = "/shutdown/{id}")
     public CallResult shutdown(@PathVariable Long id){
-        scheduleService.stopFlow(id);
+        flowInfoService.shutdown(id);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
                 .message(CallResultConstant.SUCCESS_MESSAGE)

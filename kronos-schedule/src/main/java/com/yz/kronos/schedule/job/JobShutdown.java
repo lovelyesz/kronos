@@ -1,6 +1,6 @@
 package com.yz.kronos.schedule.job;
 
-import com.yz.kronos.model.KubernetesConfig;
+import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.queue.JobQueue;
 
 /**
@@ -20,7 +20,7 @@ public interface JobShutdown {
      * @param execId
      * @param config
      */
-    void shutdown(String execId,KubernetesConfig config);
+    void shutdown(String execId, KubernetesConfig config);
 
 
     abstract class BaseJobShutdown implements JobShutdown {

@@ -1,6 +1,6 @@
 package com.yz.kronos.schedule.listener;
 
-import com.yz.kronos.model.KubernetesConfig;
+import com.yz.kronos.KubernetesConfig;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobList;
 import io.fabric8.kubernetes.client.Config;

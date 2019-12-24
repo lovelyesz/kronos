@@ -1,8 +1,8 @@
 package com.yz.kronos.schedule.flow;
 
 import com.yz.kronos.ExecuteConstant;
-import com.yz.kronos.model.KubernetesConfig;
-import com.yz.kronos.model.JobInfo;
+import com.yz.kronos.JobInfo;
+import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.job.JobSchedule;
 import com.yz.kronos.schedule.job.JobShutdown;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;

@@ -1,7 +1,7 @@
 package com.yz.kronos.execute;
 
+import com.yz.kronos.JobInfo;
 import com.yz.kronos.exception.JobException;
-import com.yz.kronos.model.JobInfo;
 
 /**
  * 工作队列

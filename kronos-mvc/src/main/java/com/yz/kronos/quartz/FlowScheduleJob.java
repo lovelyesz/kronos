@@ -1,6 +1,6 @@
 package com.yz.kronos.quartz;
 
-import com.yz.kronos.service.ScheduleService;
+import com.yz.kronos.service.FlowInfoService;
 import com.yz.kronos.util.SpringHelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
@@ -16,10 +16,10 @@ public class FlowScheduleJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        ScheduleService scheduleService = SpringHelperUtil.getApplicationContext().getBean(ScheduleService.class);
+        FlowInfoService scheduleService = SpringHelperUtil.getApplicationContext().getBean(FlowInfoService.class);
         log.info(" quartz execute {}",jobExecutionContext);
         long flowId = jobExecutionContext.getMergedJobDataMap().getLongValue("flowId");
-        scheduleService.runFlow(flowId);
+        scheduleService.schedule(flowId);
     }
 
 }

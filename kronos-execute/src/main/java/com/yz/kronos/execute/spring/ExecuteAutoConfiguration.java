@@ -1,12 +1,12 @@
 package com.yz.kronos.execute.spring;
 
 import com.yz.kronos.ExecuteConstant;
+import com.yz.kronos.JobInfo;
 import com.yz.kronos.alert.AlertHandler;
 import com.yz.kronos.alert.DefaultAlertHandler;
 import com.yz.kronos.execute.ExecuteErrorHandle;
 import com.yz.kronos.execute.IsolatedJavaJob;
 import com.yz.kronos.execute.JobInfoQueue;
-import com.yz.kronos.model.JobInfo;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,4 +1,4 @@
-package com.yz.kronos.model;
+package com.yz.kronos;
 
 import lombok.Data;
 

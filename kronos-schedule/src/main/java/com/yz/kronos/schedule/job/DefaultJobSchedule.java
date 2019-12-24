@@ -1,6 +1,6 @@
 package com.yz.kronos.schedule.job;
 
-import com.yz.kronos.model.KubernetesConfig;
+import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
 
