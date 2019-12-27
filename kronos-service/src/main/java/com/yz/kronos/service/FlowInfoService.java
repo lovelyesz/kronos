@@ -3,6 +3,7 @@ package com.yz.kronos.service;
 import com.yz.kronos.model.FlowInfoModel;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 工作流管理
@@ -26,4 +27,6 @@ public interface FlowInfoService {
     void schedule(Long flowId);
 
     void shutdown(Long flowId);
+
+    List<FlowInfoModel> selectByIds(Set<Long> flowIds);
 }

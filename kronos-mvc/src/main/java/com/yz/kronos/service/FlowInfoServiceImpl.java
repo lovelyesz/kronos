@@ -14,12 +14,9 @@ import com.yz.kronos.model.*;
 import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.FlowInfo;
-import com.yz.kronos.schedule.flow.FlowSchedule;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -151,7 +148,7 @@ public class FlowInfoServiceImpl implements FlowInfoService {
             log.error("kronos flow stop fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
             return;
         }
-        List<ExecuteLogModel> executeLogModelList = executeLogService.findByFlowIdAndState(flowId, JobState.SCHEDULED,JobState.INIT);
+        List<ExecuteLogModel> executeLogModelList = executeLogService.findByFlowIdAndState(flowId, JobState.RUNNING,JobState.INIT);
         if (executeLogModelList.isEmpty()){
             log.error("kronos flow not find status is 0 or 1 of execute log flowId:{}",flowId);
             return;
@@ -167,5 +164,10 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         //更新工作流状态
         flowInfoRepository.save(flowInfoModel);
 
+    }
+
+    @Override
+    public List<FlowInfoModel> selectByIds(Set<Long> flowIds) {
+        return flowInfoRepository.findByIdIn(flowIds);
     }
 }

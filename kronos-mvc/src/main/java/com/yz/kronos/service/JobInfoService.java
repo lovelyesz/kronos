@@ -8,6 +8,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author shanchong
@@ -38,4 +39,7 @@ public class JobInfoService {
         return jobInfoRepository.findById(id).get();
     }
 
+    public List<JobInfoModel> selectByIds(Set<Long> jobIds) {
+        return jobInfoRepository.findByIdIn(jobIds);
+    }
 }

@@ -7,11 +7,10 @@ package com.yz.kronos.enu;
 public enum JobState {
 
     INIT(0,"任务初始化"),
-    SCHEDULED(1,"调度完成"),
-//    EXECUTING(2,"正在执行"),
-    SUCCESS(3,"执行成功"),
-    FAIL(4,"执行失败"),
-    SHUTDOWN(5,"手动关闭"),
+    RUNNING(1,"正在执行"),
+    SUCCESS(2,"执行成功"),
+    FAIL(3,"执行失败"),
+    SHUTDOWN(4,"手动关闭"),
     UNKNOW(9,"未知状态");
 
     int code;

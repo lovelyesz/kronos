@@ -33,7 +33,8 @@ public class ExecuteLogModel {
     @Column(updatable = false)
     private Long flowId;
 
-    private Integer state;
+    @Column(name = "`status`")
+    private Integer status;
 
     private String remark;
 
@@ -46,5 +47,9 @@ public class ExecuteLogModel {
 
     private Integer failedCount;
 
+    @Transient
+    private JobInfoModel jobInfo;
+    @Transient
+    private FlowInfoModel flowInfo;
 
 }

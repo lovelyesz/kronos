@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +27,5 @@ public interface FlowInfoRepository extends JpaRepository<FlowInfoModel,Long> {
      */
     List<FlowInfoModel> findByNamespaceIdAndIsDelete(Long namespaceId,Integer isDelete);
 
+    List<FlowInfoModel> findByIdIn(Collection<Long> ids);
 }
