@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>
+    <property resource="/application.yml" />
     <!-- ?????? -->
+    <appender name="FILE-APPENDER"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logging.file.path}/default/common-default.log.%d{yyyyMMdd}
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="DEFAULT-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
-        <!--<file>${log.home}/default/common-default.log</file>-->
         <encoder charset="UTF-8">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -21,5 +33,6 @@
     <logger name="java" level="INFO"/>
     <root level="INFO">
         <appender-ref ref="DEFAULT-APPENDER"/>
+        <appender-ref ref="FILE-APPENDER"/>
     </root>
 </configuration>
