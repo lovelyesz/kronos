@@ -3,11 +3,6 @@ server:
   servlet:
     context-path: /
 spring:
-  mvc:
-    view:
-      prefix: /templates/
-      suffix: .html
-    static-path-pattern: /static/**
   datasource:
     url: jdbc:mysql://10.200.46.238:3306/kronos?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
     username: root
@@ -36,7 +31,6 @@ kronos:
   resync-period-in-millis: 60000
   executor-queue-name-pre: "KRONOS_EXECUTOR_QUEUE_NAME:"
   executor-synchronizer-name-pre: "KRONOS_EXECUTOR_SYNCHRONIZERNAME_"
-logging:
-  file:
-    path: /data/application/logs/kronos/
+
+logFile: /data/application/logs/kronos/
 
