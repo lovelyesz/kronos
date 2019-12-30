@@ -1,5 +1,5 @@
 server:
-  port: 1334
+  port: 12710
   servlet:
     context-path: /
 spring:
