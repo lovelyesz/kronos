@@ -13,7 +13,7 @@ public class CallResult<T> {
 
     private Integer code;
 
-    private String message;
+    private String msg;
 
     private T data;
 

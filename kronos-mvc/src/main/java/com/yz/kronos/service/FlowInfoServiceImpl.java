@@ -1,6 +1,8 @@
 package com.yz.kronos.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.dao.FlowInfoRepository;
@@ -15,8 +17,11 @@ import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.FlowInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -60,33 +65,6 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         final FlowInfoModel flowInfoModel = flowInfoRepository.findById(id).get();
         flowInfoModel.setIsDelete(YesNoEnum.YES.code());
         flowInfoRepository.save(flowInfoModel);
-    }
-
-    @Override
-    public List<FlowInfoModel> list(Long namespaceId){
-        final List<FlowInfoModel> flowInfoModels = flowInfoRepository.findByNamespaceIdAndIsDelete(namespaceId, YesNoEnum.NO.code());
-        final Set<Long> flowIds = flowInfoModels.parallelStream().map(FlowInfoModel::getId).collect(Collectors.toSet());
-        final List<JobRelationModel> relationModels = jobRelationRepository.findByFlowIdIn(flowIds);
-
-        final Set<Long> jobIds = relationModels.parallelStream().map(JobRelationModel::getJobId).collect(Collectors.toSet());
-        final List<JobInfoModel> jobInfoModels = jobInfoRepository.findByIdIn(jobIds);
-        final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModels.parallelStream()
-                .collect(Collectors.toMap(JobInfoModel::getId, p -> p));
-        final Map<Long, List<JobInfoModel>> flowIdJobMap = relationModels.stream().map(e -> {
-            final Long jobId = e.getJobId();
-            final JobInfoModel jobInfoModel = jobInfoModelMap.get(jobId);
-            jobInfoModel.setShareTotal(e.getShareTotal());
-            jobInfoModel.setSort(e.getSort());
-            jobInfoModel.setFlowId(e.getFlowId());
-            return jobInfoModel;
-        }).sorted(Comparator.comparing(JobInfoModel::getSort))
-                .collect(Collectors.groupingBy(JobInfoModel::getFlowId, Collectors.toList()));
-
-        return flowInfoModels.parallelStream().peek(flowInfoModel->{
-            final Long flowId = flowInfoModel.getId();
-            final List<JobInfoModel> jobList = flowIdJobMap.getOrDefault(flowId, Lists.emptyList());
-            flowInfoModel.setJobList(jobList);
-        }).collect(Collectors.toList());
     }
 
     @Override
@@ -169,5 +147,42 @@ public class FlowInfoServiceImpl implements FlowInfoService {
     @Override
     public List<FlowInfoModel> selectByIds(Set<Long> flowIds) {
         return flowInfoRepository.findByIdIn(flowIds);
+    }
+
+    @Override
+    public List<FlowInfoModel> selectByFlowName(String flowName) {
+        return flowInfoRepository.findByFlowNameLike(flowName);
+    }
+
+    @Override
+    public PageResult<FlowInfoModel> page(Long namespaceId, Integer page, Integer limit) {
+        final FlowInfoModel flowInfoModel = new FlowInfoModel();
+        flowInfoModel.setNamespaceId(namespaceId);
+        flowInfoModel.setIsDelete(YesNoEnum.NO.code());
+        final Page<FlowInfoModel> flowInfoModelPage = flowInfoRepository.findAll(Example.of(flowInfoModel), PageRequest.of(page, limit,Sort.by("id")));
+        final Set<Long> flowIds = flowInfoModelPage.map(FlowInfoModel::getId).stream().collect(Collectors.toSet());
+        final List<JobRelationModel> relationModels = jobRelationRepository.findByFlowIdIn(flowIds);
+
+        final Set<Long> jobIds = relationModels.parallelStream().map(JobRelationModel::getJobId).collect(Collectors.toSet());
+        final List<JobInfoModel> jobInfoModels = jobInfoRepository.findByIdIn(jobIds);
+        final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModels.parallelStream()
+                .collect(Collectors.toMap(JobInfoModel::getId, p -> p));
+        final Map<Long, List<JobInfoModel>> flowIdJobMap = relationModels.stream().map(e -> {
+            final Long jobId = e.getJobId();
+            final JobInfoModel jobInfoModel = jobInfoModelMap.get(jobId);
+            jobInfoModel.setShareTotal(e.getShareTotal());
+            jobInfoModel.setSort(e.getSort());
+            jobInfoModel.setFlowId(e.getFlowId());
+            return jobInfoModel;
+        }).sorted(Comparator.comparing(JobInfoModel::getSort))
+                .collect(Collectors.groupingBy(JobInfoModel::getFlowId, Collectors.toList()));
+        flowInfoModelPage.forEach(e->{
+            e.setJobList(flowIdJobMap.getOrDefault(e.getId(), Lists.newArrayList()));
+        });
+        return PageResult.<FlowInfoModel>builder()
+                .code(CallResultConstant.SUCCESS_CODE)
+                .list(flowInfoModelPage.toList())
+                .totalSize(flowInfoModelPage.getTotalElements())
+                .build();
     }
 }

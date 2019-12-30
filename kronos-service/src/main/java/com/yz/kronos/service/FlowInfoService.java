@@ -1,6 +1,7 @@
 package com.yz.kronos.service;
 
 import com.yz.kronos.model.FlowInfoModel;
+import com.yz.kronos.model.PageResult;
 
 import java.util.List;
 import java.util.Set;
@@ -17,16 +18,13 @@ public interface FlowInfoService {
 
     void delete(Long id);
 
-    /**
-     * 工作流列表
-     * @param namespaceId
-     * @return
-     */
-    List<FlowInfoModel> list(Long namespaceId);
-
     void schedule(Long flowId);
 
     void shutdown(Long flowId);
 
     List<FlowInfoModel> selectByIds(Set<Long> flowIds);
+
+    List<FlowInfoModel> selectByFlowName(String flowName);
+
+    PageResult<FlowInfoModel> page(Long namespaceId, Integer page, Integer limit);
 }

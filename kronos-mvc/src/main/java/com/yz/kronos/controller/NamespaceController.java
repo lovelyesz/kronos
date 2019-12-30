@@ -30,7 +30,6 @@ public class NamespaceController {
         namespaceService.save(model);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
                 .build();
     }
 
@@ -44,7 +43,6 @@ public class NamespaceController {
         namespaceService.delete(id);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
                 .build();
     }
 

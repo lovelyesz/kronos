@@ -26,7 +26,6 @@ public class JobController {
         final JobInfoModel model = jobInfoService.save(jobInfoModel);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
                 .data(model)
                 .build();
     }
@@ -42,7 +41,6 @@ public class JobController {
         jobInfoService.delete(id);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
                 .build();
     }
 

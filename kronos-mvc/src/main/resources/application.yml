@@ -1,7 +1,7 @@
 server:
   port: 1334
   servlet:
-    context-path: /kronos
+    context-path: /
 spring:
   mvc:
     view:
@@ -13,6 +13,8 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
 
 redisson:
   sentinel:
@@ -37,3 +39,4 @@ kronos:
 logging:
   file:
     path: /data/application/logs/kronos/
+

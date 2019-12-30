@@ -28,4 +28,7 @@ public interface FlowInfoRepository extends JpaRepository<FlowInfoModel,Long> {
     List<FlowInfoModel> findByNamespaceIdAndIsDelete(Long namespaceId,Integer isDelete);
 
     List<FlowInfoModel> findByIdIn(Collection<Long> ids);
+
+    List<FlowInfoModel> findByFlowNameLike(String flowName);
+
 }

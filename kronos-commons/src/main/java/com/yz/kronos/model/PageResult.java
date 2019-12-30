@@ -11,9 +11,7 @@ import java.util.List;
 @Data
 public class PageResult<T> {
 
-    private int pageNum;//当前页数
-
-    private int pageSize;//页大小
+    private Integer code;
 
     private Long totalSize;//总数据量
 

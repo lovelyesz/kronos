@@ -1,19 +1,20 @@
 package com.yz.kronos.controller;
 
 import com.yz.kronos.CallResultConstant;
+import com.yz.kronos.from.FlowForm;
 import com.yz.kronos.model.CallResult;
 import com.yz.kronos.model.FlowInfoModel;
+import com.yz.kronos.model.PageResult;
 import com.yz.kronos.service.FlowInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
  * @author shanchong
  * @date 2019-11-07
  **/
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/flow")
 public class FlowController {
@@ -22,8 +23,11 @@ public class FlowController {
     FlowInfoService flowInfoService;
 
     @GetMapping(value = "/list")
-    public List<FlowInfoModel> list(Long namespaceId){
-        return flowInfoService.list(namespaceId);
+    public PageResult<FlowInfoModel> list(FlowForm form){
+        final PageResult<FlowInfoModel> page = flowInfoService.page(form.getNamespaceId(),
+                form.getPage()-1,form.getLimit());
+        page.setCondition(form);
+        return page;
     }
 
     @PostMapping(value = "/save")
@@ -31,40 +35,8 @@ public class FlowController {
         final FlowInfoModel model = flowInfoService.save(flowInfoModel);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
+                .msg(CallResultConstant.SUCCESS_MESSAGE)
                 .data(model)
-                .build();
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    public CallResult delete(@PathVariable Long id){
-        flowInfoService.delete(id);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
-                .build();
-    }
-
-    @GetMapping(value = "/get/{id}")
-    public FlowInfoModel get(@PathVariable Long id){
-        return flowInfoService.get(id);
-    }
-
-    @PostMapping(value = "/schedule/{id}")
-    public CallResult run(@PathVariable Long id){
-        flowInfoService.schedule(id);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
-                .build();
-    }
-
-    @PostMapping(value = "/shutdown/{id}")
-    public CallResult shutdown(@PathVariable Long id){
-        flowInfoService.shutdown(id);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .message(CallResultConstant.SUCCESS_MESSAGE)
                 .build();
     }
 

@@ -15,6 +15,7 @@
     </logger>
     <!-- ??logger -->
     <logger name="org.springframework" level="INFO"/>
+    <logger name="com.yz.kronos.dao" level="DEBUG"/>
     <logger name="org.apache" level="INFO"/>
     <!-- ??jdk?? -->
     <logger name="java" level="INFO"/>
