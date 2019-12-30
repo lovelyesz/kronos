@@ -57,7 +57,7 @@ public class ExecuteLogService implements JobExecuteRepository {
     }
 
     public List<ExecuteLogModel> findByFlowIdAndState(Long flowId, JobState... jobState){
-        return executeLogRepository.findByFlowIdAndStateIn(flowId, Arrays.stream(jobState).map(JobState::code).collect(Collectors.toList()));
+        return executeLogRepository.findByFlowIdAndStatusIn(flowId, Arrays.stream(jobState).map(JobState::code).collect(Collectors.toList()));
     }
 
     public Page<ExecuteLogModel> page(ExecuteLogModel model,Integer pageNum,Integer pageSize){

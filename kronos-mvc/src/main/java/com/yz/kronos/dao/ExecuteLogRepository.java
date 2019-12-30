@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ExecuteLogRepository extends JpaRepository<ExecuteLogModel,Long> {
 
-    List<ExecuteLogModel> findByFlowIdAndStateIn(Long flowId,List<Integer> state);
+    List<ExecuteLogModel> findByFlowIdAndStatusIn(Long flowId,List<Integer> state);
 
 }
