@@ -30,15 +30,22 @@ public class FlowController {
         return page;
     }
 
-    @PostMapping(value = "/save")
-    public CallResult save(FlowInfoModel flowInfoModel){
-        final FlowInfoModel model = flowInfoService.save(flowInfoModel);
+    @PostMapping(value = "/schedule")
+    public CallResult schedule(@RequestParam(value = "flowId")Long flowId){
+        flowInfoService.schedule(flowId);
         return CallResult.builder()
                 .code(CallResultConstant.SUCCESS_CODE)
                 .msg(CallResultConstant.SUCCESS_MESSAGE)
-                .data(model)
                 .build();
     }
 
+    @PostMapping(value = "/shutdown")
+    public CallResult shutdown(@RequestParam(value = "flowId")Long flowId){
+        flowInfoService.shutdown(flowId);
+        return CallResult.builder()
+                .code(CallResultConstant.SUCCESS_CODE)
+                .msg(CallResultConstant.SUCCESS_MESSAGE)
+                .build();
+    }
 
 }
