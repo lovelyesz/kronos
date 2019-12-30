@@ -87,6 +87,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>kronos</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,9 +103,9 @@
                 <version>2.2.0.RELEASE</version>
                 <configuration>
                     <mainClass>com.BootstrapApplication</mainClass>
+                    <outputDirectory>../target</outputDirectory>
                 </configuration>
                 <executions>
-
                     <execution>
                         <goals>
                             <goal>repackage</goal>
