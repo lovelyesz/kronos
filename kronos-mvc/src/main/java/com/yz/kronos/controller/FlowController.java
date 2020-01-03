@@ -22,7 +22,7 @@ public class FlowController {
     @Autowired
     FlowInfoService flowInfoService;
 
-    @GetMapping(value = "/list")
+    @RequestMapping(value = "/list",method = {RequestMethod.POST, RequestMethod.GET})
     public PageResult<FlowInfoModel> list(FlowForm form){
         final PageResult<FlowInfoModel> page = flowInfoService.page(form.getNamespaceId(),
                 form.getPage()-1,form.getLimit());

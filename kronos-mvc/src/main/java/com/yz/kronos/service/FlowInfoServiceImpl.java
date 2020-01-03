@@ -22,6 +22,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -67,6 +68,7 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         flowInfoRepository.save(flowInfoModel);
     }
 
+    @Async
     @Override
     public void schedule(Long flowId){
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
@@ -117,6 +119,7 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         flowInfoRepository.save(flowInfoModel);
     }
 
+    @Async
     @Override
     public void shutdown(Long flowId) {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();

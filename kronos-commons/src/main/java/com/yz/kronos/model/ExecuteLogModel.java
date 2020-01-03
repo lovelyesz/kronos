@@ -20,11 +20,11 @@ public class ExecuteLogModel {
     private Long id;
 
     @Column(updatable = false)
-    @JsonFormat(pattern = "yyyyMMddHHmmss",timezone = "GTM+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GTM+8")
     private Date createTime;
 
     @Column(insertable = false)
-    @JsonFormat(pattern = "yyyyMMddHHmmss",timezone = "GTM+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GTM+8")
     private Date finishTime;
 
     @Column(updatable = false)

@@ -5,10 +5,8 @@ import com.yz.kronos.model.ExecuteLogModel;
 import com.yz.kronos.model.PageResult;
 import com.yz.kronos.service.ExecuteLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -23,7 +21,7 @@ public class ExecuteLogController {
     @Autowired
     ExecuteLogService executeLogService;
 
-    @GetMapping(value = "/list")
+    @RequestMapping(value = "/list",method = {RequestMethod.GET,RequestMethod.POST})
     public PageResult<ExecuteLogModel> list(ExecuteLogForm form){
         final PageResult<ExecuteLogModel> page = executeLogService.page(form.getFlowName(),form.getPage(),form.getLimit());
         page.setCondition(form);
