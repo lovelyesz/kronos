@@ -14,7 +14,6 @@
         <module>kronos-mvc</module>
         <module>kronos-execute</module>
         <module>kronos-alert</module>
-        <module>kronos-service</module>
     </modules>
     <properties>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>

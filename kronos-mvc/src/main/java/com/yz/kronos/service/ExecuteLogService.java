@@ -48,13 +48,8 @@ public class ExecuteLogService implements JobExecuteRepository {
         return executeLogRepository.save(executeLogModel);
     }
 
-    public ExecuteLogModel update(Long id,JobState state){
-        ExecuteLogModel executeLogModel = new ExecuteLogModel();
-        executeLogModel.setId(id);
-        executeLogModel.setStatus(state.code());
-        executeLogModel.setRemark(state.desc());
-        executeLogModel.setFinishTime(new Date());
-        return executeLogRepository.save(executeLogModel);
+    public int updateStatus(Long id,JobState state){
+        return executeLogRepository.updateStatus(new Date(),state.code(),state.desc(),id);
     }
 
     public ExecuteLogModel get(Long execId){
@@ -71,12 +66,12 @@ public class ExecuteLogService implements JobExecuteRepository {
         }
         final List<FlowInfoModel> flowInfoModelList = flowInfoService.selectByFlowName("%"+flowName+"%");
         final Set<Long> flowIds = flowInfoModelList.parallelStream().map(FlowInfoModel::getId).collect(Collectors.toSet());
-        final Page<ExecuteLogModel> executeLogModelPage = executeLogRepository.findByFlowIdIn(flowIds, PageRequest.of(page, limit));
+        final Page<ExecuteLogModel> executeLogModelPage = executeLogRepository.findByFlowIdIn(flowIds, PageRequest.of(page, limit, Sort.by(Sort.Order.desc("createTime"))));
         return getExecuteLogModels(executeLogModelPage);
     }
 
     public PageResult<ExecuteLogModel> listAll(Integer page,Integer limit){
-        final Page<ExecuteLogModel> executeLogModelPage = executeLogRepository.findAll(PageRequest.of(page, limit, Sort.by(Sort.Order.by("createTime"))));
+        final Page<ExecuteLogModel> executeLogModelPage = executeLogRepository.findAll(PageRequest.of(page, limit, Sort.by(Sort.Order.desc("createTime"))));
         return getExecuteLogModels(executeLogModelPage);
     }
 

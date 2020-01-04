@@ -26,7 +26,7 @@ public class ExecuteLogController {
     @RequestMapping(value = "/list",method = {RequestMethod.GET,RequestMethod.POST})
     public PageResult<ExecuteLogModel> list(ExecuteLogForm form){
         log.info("{}",form);
-        final PageResult<ExecuteLogModel> page = executeLogService.page(form.getFlowName(),form.getPage(),form.getLimit());
+        final PageResult<ExecuteLogModel> page = executeLogService.page(form.getFlowName(),form.getPage()-1,form.getLimit());
         page.setCondition(form);
         return page;
     }

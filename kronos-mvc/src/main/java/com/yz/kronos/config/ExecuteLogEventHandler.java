@@ -64,9 +64,9 @@ public class ExecuteLogEventHandler implements ResourceEventHandler<Job> {
      */
     @Override
     public void onDelete(Job obj, boolean deletedFinalStateUnknown) {
-//        Map<String, String> labels = obj.getMetadata().getLabels();
-//        final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
-//        final Long execLogId = ExecuteUtil.getExecLogId(execId);
-//        executeLogService.update(execLogId, JobState.SHUTDOWN);
+        Map<String, String> labels = obj.getMetadata().getLabels();
+        final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
+        final Long execLogId = ExecuteUtil.getExecLogId(execId);
+        executeLogService.updateStatus(execLogId, JobState.FAIL);
     }
 }

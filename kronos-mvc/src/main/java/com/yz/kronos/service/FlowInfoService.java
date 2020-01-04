@@ -17,6 +17,8 @@ import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.FlowInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +37,7 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @Service
-public class FlowInfoServiceImpl implements FlowInfoService {
+public class FlowInfoService {
 
     @Autowired
     FlowInfoRepository flowInfoRepository;
@@ -51,17 +54,14 @@ public class FlowInfoServiceImpl implements FlowInfoService {
     @Autowired
     private ExecuteLogService executeLogService;
 
-    @Override
     public FlowInfoModel get(Long id){
         return flowInfoRepository.findById(id).get();
     }
 
-    @Override
     public FlowInfoModel save(FlowInfoModel flowInfoModel){
         return flowInfoRepository.save(flowInfoModel);
     }
 
-    @Override
     public void delete(Long id){
         final FlowInfoModel flowInfoModel = flowInfoRepository.findById(id).get();
         flowInfoModel.setIsDelete(YesNoEnum.YES.code());
@@ -69,8 +69,7 @@ public class FlowInfoServiceImpl implements FlowInfoService {
     }
 
     @Async
-    @Override
-    public void schedule(Long flowId){
+    public void schedule(Long flowId) {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
         if (!FlowState.RUNNABLE.code().equals(flowInfoModel.getStatus())) {
             log.error("kronos flow execute fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
@@ -115,12 +114,11 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         flowInfo.setFlowId(flowId);
         flowManage.schedule(flowInfo);
 
-        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
-        flowInfoRepository.save(flowInfoModel);
+//        flowInfoModel.setStatus(FlowState.RUNNING.code());
+//        flowInfoRepository.save(flowInfoModel);
     }
 
     @Async
-    @Override
     public void shutdown(Long flowId) {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
         log.warn("kronos flow is stopping flow:{}",flowId);
@@ -139,7 +137,7 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         flowManage.shutdown(execIds);
 
         executeLogModelList.forEach(executeLogModel->{
-            executeLogService.update(executeLogModel.getId(),JobState.SHUTDOWN);
+            executeLogService.updateStatus(executeLogModel.getId(),JobState.SHUTDOWN);
         });
         flowInfoModel.setStatus(FlowState.RUNNABLE.code());
         //更新工作流状态
@@ -147,17 +145,14 @@ public class FlowInfoServiceImpl implements FlowInfoService {
 
     }
 
-    @Override
     public List<FlowInfoModel> selectByIds(Set<Long> flowIds) {
         return flowInfoRepository.findByIdIn(flowIds);
     }
 
-    @Override
     public List<FlowInfoModel> selectByFlowName(String flowName) {
         return flowInfoRepository.findByFlowNameLike(flowName);
     }
 
-    @Override
     public PageResult<FlowInfoModel> page(Long namespaceId, Integer page, Integer limit) {
         final FlowInfoModel flowInfoModel = new FlowInfoModel();
         flowInfoModel.setNamespaceId(namespaceId);
