@@ -2,6 +2,7 @@ package com.yz.kronos.controller;
 
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.model.CallResult;
+import com.yz.kronos.model.CallResultBuilder;
 import com.yz.kronos.model.NamespaceInfoModel;
 import com.yz.kronos.service.NamespaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,7 @@ public class NamespaceController {
     @PostMapping(value = "/save")
     public CallResult save(NamespaceInfoModel model){
         namespaceService.save(model);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .build();
+        return CallResultBuilder.success();
     }
 
     @GetMapping(value = "/get/{id}")
@@ -41,9 +40,7 @@ public class NamespaceController {
     @DeleteMapping(value = "/delete/{id}")
     public CallResult delete(@PathVariable Long id){
         namespaceService.delete(id);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .build();
+        return CallResultBuilder.success();
     }
 
 }

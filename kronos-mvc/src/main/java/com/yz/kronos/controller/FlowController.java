@@ -3,6 +3,7 @@ package com.yz.kronos.controller;
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.from.FlowForm;
 import com.yz.kronos.model.CallResult;
+import com.yz.kronos.model.CallResultBuilder;
 import com.yz.kronos.model.FlowInfoModel;
 import com.yz.kronos.model.PageResult;
 import com.yz.kronos.service.FlowInfoService;
@@ -33,19 +34,13 @@ public class FlowController {
     @PostMapping(value = "/schedule")
     public CallResult schedule(@RequestParam(value = "flowId")Long flowId){
         flowInfoService.schedule(flowId);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .msg(CallResultConstant.SUCCESS_MESSAGE)
-                .build();
+        return CallResultBuilder.success();
     }
 
     @PostMapping(value = "/shutdown")
     public CallResult shutdown(@RequestParam(value = "flowId")Long flowId){
         flowInfoService.shutdown(flowId);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .msg(CallResultConstant.SUCCESS_MESSAGE)
-                .build();
+        return CallResultBuilder.success();
     }
 
 }

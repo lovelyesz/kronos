@@ -2,6 +2,7 @@ package com.yz.kronos.controller;
 
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.model.CallResult;
+import com.yz.kronos.model.CallResultBuilder;
 import com.yz.kronos.model.JobInfoModel;
 import com.yz.kronos.service.JobInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,7 @@ public class JobController {
     @PostMapping(value = "/save")
     public CallResult save(JobInfoModel jobInfoModel){
         final JobInfoModel model = jobInfoService.save(jobInfoModel);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .data(model)
-                .build();
+        return CallResultBuilder.success(model);
     }
 
     @GetMapping(value = "/list")
@@ -39,15 +37,12 @@ public class JobController {
     @DeleteMapping(value = "/delete/{id}")
     public CallResult delete(@PathVariable(value = "id") Long id){
         jobInfoService.delete(id);
-        return CallResult.builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .build();
+        return CallResultBuilder.success();
     }
 
     @GetMapping(value = "/get/{id}")
     public JobInfoModel get(@PathVariable(value = "id")Long id){
-        final JobInfoModel jobInfoModel = jobInfoService.get(id);
-        return jobInfoModel;
+        return jobInfoService.get(id);
     }
 
 

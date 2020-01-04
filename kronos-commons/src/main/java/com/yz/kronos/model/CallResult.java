@@ -1,14 +1,16 @@
 package com.yz.kronos.model;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author shanchong
  * @date 2019-11-07
  **/
+@ToString
 @Data
-@Builder
+@NoArgsConstructor
 public class CallResult<T> {
 
     private Integer code;
