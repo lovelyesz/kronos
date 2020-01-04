@@ -2,13 +2,14 @@ package com.yz.kronos.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
 @ToString
-@Builder
 @Data
+@NoArgsConstructor
 public class PageResult<T> {
 
     private Integer code;

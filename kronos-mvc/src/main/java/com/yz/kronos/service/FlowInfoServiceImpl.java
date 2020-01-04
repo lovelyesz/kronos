@@ -182,10 +182,10 @@ public class FlowInfoServiceImpl implements FlowInfoService {
         flowInfoModelPage.forEach(e->{
             e.setJobList(flowIdJobMap.getOrDefault(e.getId(), Lists.newArrayList()));
         });
-        return PageResult.<FlowInfoModel>builder()
-                .code(CallResultConstant.SUCCESS_CODE)
-                .list(flowInfoModelPage.toList())
-                .totalSize(flowInfoModelPage.getTotalElements())
-                .build();
+        final PageResult<FlowInfoModel> pageResult = new PageResult<>();
+        pageResult.setCode(CallResultConstant.SUCCESS_CODE);
+        pageResult.setList(flowInfoModelPage.toList());
+        pageResult.setTotalSize(flowInfoModelPage.getTotalElements());
+        return pageResult;
     }
 }

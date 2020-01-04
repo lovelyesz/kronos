@@ -91,11 +91,11 @@ public class ExecuteLogService implements JobExecuteRepository {
             e.setJobInfo(jobInfoModelMap.getOrDefault(e.getJobId(),new JobInfoModel()));
             e.setFlowInfo(flowInfoModelMap.getOrDefault(e.getFlowId(),new FlowInfoModel()));
         });
-        return PageResult.<ExecuteLogModel>builder()
-                .totalSize(executeLogModelList.getTotalElements())
-                .list(executeLogModelList.toList())
-                .code(CallResultConstant.SUCCESS_CODE)
-                .build();
+        final PageResult<ExecuteLogModel> pageResult = new PageResult<>();
+        pageResult.setCode(CallResultConstant.SUCCESS_CODE);
+        pageResult.setList(executeLogModelList.toList());
+        pageResult.setTotalSize(executeLogModelList.getTotalElements());
+        return pageResult;
     }
 
 
