@@ -114,7 +114,7 @@ public class FlowInfoService {
         flowInfo.setFlowId(flowId);
         flowManage.schedule(flowInfo);
 
-        flowInfoModel.setStatus(FlowState.RUNNING.code());
+        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
         flowInfoRepository.save(flowInfoModel);
     }
 
