@@ -33,8 +33,8 @@ public class ExecuteLogService implements JobExecuteRepository {
     @Autowired
     FlowInfoService flowInfoService;
 
-    public ExecuteLogModel update(Long id, JobStatus status){
-        ExecuteLogModel executeLogModel = new ExecuteLogModel();
+    public ExecuteLogModel updateProcess(Long id, JobStatus status){
+        final ExecuteLogModel executeLogModel = get(id);
         executeLogModel.setId(id);
         executeLogModel.setFinishTime(new Date());
         Integer succeed = Optional.ofNullable(status.getSucceeded()).orElse(0);
@@ -45,6 +45,15 @@ public class ExecuteLogService implements JobExecuteRepository {
         executeLogModel.setActiveCount(active);
         executeLogModel.setStatus(JobState.RUNNING.code());
         executeLogModel.setRemark(JobState.RUNNING.desc());
+        final Integer shareTotal = executeLogModel.getShareTotal();
+        if (shareTotal.equals(succeed)){
+            executeLogModel.setStatus(JobState.SUCCESS.code());
+            executeLogModel.setRemark(JobState.SUCCESS.desc());
+        }
+        if (failed>0){
+            executeLogModel.setStatus(JobState.FAIL.code());
+            executeLogModel.setRemark(JobState.FAIL.desc());
+        }
         return executeLogRepository.save(executeLogModel);
     }
 

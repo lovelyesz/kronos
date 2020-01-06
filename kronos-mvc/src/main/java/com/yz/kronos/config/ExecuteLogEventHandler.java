@@ -2,6 +2,7 @@ package com.yz.kronos.config;
 
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.enu.JobState;
+import com.yz.kronos.model.ExecuteLogModel;
 import com.yz.kronos.service.ExecuteLogService;
 import com.yz.kronos.util.ExecuteUtil;
 import io.fabric8.kubernetes.api.model.batch.Job;
@@ -50,7 +51,7 @@ public class ExecuteLogEventHandler implements ResourceEventHandler<Job> {
         JobStatus status = newObj.getStatus();
         Map<String, String> labels = newObj.getMetadata().getLabels();
         final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
-        executeLogService.update(Long.valueOf(execId),status);
+        executeLogService.updateProcess(Long.valueOf(execId), status);
     }
 
     /**
