@@ -13,11 +13,11 @@ spring:
 
 redisson:
   sentinel:
-    master-name: paygate
-    sentinel-addresses:
-      - config://ds.redis3-3.yunzong:26379
-      - config://ds.redis3-2.yunzong:26379
-      - config://ds.redis3-1.yunzong:26379
+    masterName: paygate
+    sentinelAddresses:
+      - redis://ds.redis3-1.yunzong:26379
+      - redis://ds.redis3-2.yunzong:26379
+      - redis://ds.redis3-3.yunzong:26379
 
 kronos:
   enable: true
@@ -29,8 +29,4 @@ kronos:
   api-version: v1
   log-path: /data/application/logs/kronos/
   resync-period-in-millis: 60000
-  executor-queue-name-pre: "KRONOS_EXECUTOR_QUEUE_NAME:"
-  executor-synchronizer-name-pre: "KRONOS_EXECUTOR_SYNCHRONIZERNAME_"
-
-logFile: /data/application/logs/kronos/
 

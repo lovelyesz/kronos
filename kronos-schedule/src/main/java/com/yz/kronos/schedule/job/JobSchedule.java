@@ -1,6 +1,7 @@
 package com.yz.kronos.schedule.job;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.handle.StartJobHandle;
@@ -42,11 +43,11 @@ public interface JobSchedule {
             final Integer shareTotal = jobInfo.getShareTotal();
             //记录执行日志
             final Long execId = repository().insert(flowId, jobInfo.getJobId(),shareTotal);
-//            final String execId1 = ExecuteUtil.getExecId(execId, flowId, jobInfo.getJobId());
-            queue.add(config.getExecutorQueueNamePre()+execId,
+            queue.add(ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE +execId,
                     JSONObject.toJSONString(jobInfo),shareTotal);
             final StartJobHandle startJobHandle = new StartJobHandle(config, jobInfo);
             startJobHandle.startJob(execId.toString());
+
             return execId;
         }
     }

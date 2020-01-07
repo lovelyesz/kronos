@@ -12,7 +12,7 @@ public interface FlowShutdown {
      * 任务关停
      * @param execIds
      */
-    void shutdown(List<String> execIds);
+    void shutdown(List<String> execIds,Long flowId);
 
 
 }

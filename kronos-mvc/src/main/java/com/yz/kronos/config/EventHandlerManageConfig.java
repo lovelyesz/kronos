@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * k8s任务监听-更新执行记录
  * @author shanchong
  * @date 2019-12-23
  **/

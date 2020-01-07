@@ -42,7 +42,4 @@ public class KubernetesConfig {
      */
     private Long resyncPeriodInMillis;
 
-    private String executorQueueNamePre;
-
-    private String executorSynchronizerNamePre;
 }

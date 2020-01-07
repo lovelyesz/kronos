@@ -8,8 +8,7 @@ public enum FlowState {
 
     INIT(0),
     RUNNABLE(1),
-    RUNNING(2),
-    CLOSE(3);
+    RUNNING(2);
 
     int code;
 

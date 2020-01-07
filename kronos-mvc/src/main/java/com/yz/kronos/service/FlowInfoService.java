@@ -58,16 +58,6 @@ public class FlowInfoService {
         return flowInfoRepository.findById(id).get();
     }
 
-    public FlowInfoModel save(FlowInfoModel flowInfoModel){
-        return flowInfoRepository.save(flowInfoModel);
-    }
-
-    public void delete(Long id){
-        final FlowInfoModel flowInfoModel = flowInfoRepository.findById(id).get();
-        flowInfoModel.setIsDelete(YesNoEnum.YES.code());
-        flowInfoRepository.save(flowInfoModel);
-    }
-
     @Async
     public void schedule(Long flowId) {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
@@ -127,6 +117,10 @@ public class FlowInfoService {
             log.error("kronos flow stop fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
             return;
         }
+        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
+        //更新工作流状态
+        flowInfoRepository.save(flowInfoModel);
+
         List<ExecuteLogModel> executeLogModelList = executeLogService.findByFlowIdAndState(flowId, JobState.RUNNING,JobState.INIT);
         if (executeLogModelList.isEmpty()){
             log.error("kronos flow not find status is 0 or 1 of execute log flowId:{}",flowId);
@@ -134,14 +128,12 @@ public class FlowInfoService {
         }
         final List<String> execIds = executeLogModelList.parallelStream().map(e->e.getId().toString())
                 .collect(Collectors.toList());
-        flowManage.shutdown(execIds);
+        flowManage.shutdown(execIds,flowId);
 
         executeLogModelList.forEach(executeLogModel->{
             executeLogService.updateStatus(executeLogModel.getId(),JobState.SHUTDOWN);
         });
-        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
-        //更新工作流状态
-        flowInfoRepository.save(flowInfoModel);
+
 
     }
 

@@ -2,7 +2,8 @@ package com.yz.kronos.spring;
 
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
-import com.yz.kronos.schedule.flow.DefaultFlowManage;
+import com.yz.kronos.schedule.flow.SimpleFlowManage;
+import com.yz.kronos.schedule.intercepter.FlowInterceptor;
 import com.yz.kronos.schedule.job.DefaultJobSchedule;
 import com.yz.kronos.schedule.job.DefaultJobShutdown;
 import com.yz.kronos.schedule.job.JobSchedule;
@@ -116,6 +117,13 @@ public class KronosAutoConfiguration {
     public JobExecuteRepository jobExecuteRepository(){
         return new DefaultJobExecuteRepository();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public FlowInterceptor flowInterceptor(){
+        return new FlowInterceptor.DefaultFlowInterceptor();
+    }
+
     /**
      * 工作流调度器
      * @param jobSchedule
@@ -125,8 +133,16 @@ public class KronosAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(JobSchedule.class)
     public AbstractFlowManage flowManage(KubernetesConfig kubernetesConfig,
-                                           JobSchedule jobSchedule, JobShutdown jobShutdown, JobProcessSynchronizer jobProcessSynchronizer){
-        return new DefaultFlowManage(kubernetesConfig,jobSchedule,jobProcessSynchronizer,jobShutdown);
+                                           JobSchedule jobSchedule, JobShutdown jobShutdown,
+                                         JobProcessSynchronizer jobProcessSynchronizer,
+                                         FlowInterceptor flowInterceptor){
+        final SimpleFlowManage simpleFlowManage = new SimpleFlowManage();
+        simpleFlowManage.setConfig(kubernetesConfig);
+        simpleFlowManage.setFlowInterceptor(flowInterceptor);
+        simpleFlowManage.setJobProcessSynchronizer(jobProcessSynchronizer);
+        simpleFlowManage.setJobSchedule(jobSchedule);
+        simpleFlowManage.setJobShutdown(jobShutdown);
+        return simpleFlowManage;
     }
 
 }

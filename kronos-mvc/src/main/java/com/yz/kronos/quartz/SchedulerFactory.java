@@ -28,6 +28,9 @@ public class SchedulerFactory {
         //可执行的工作流 list
         List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByStatus(FlowState.RUNNABLE.code());
         flowInfoModelList.forEach(flowInfoModel-> {
+            if (!FlowState.RUNNABLE.code().equals(flowInfoModel.getStatus())){
+                return;
+            }
             try {
                 addJob(flowInfoModel);
             } catch (SchedulerException e1) {

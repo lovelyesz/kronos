@@ -98,7 +98,7 @@ public abstract class AbstractStartJobHandle implements JobHandle {
                 .withArgs(jobInfo.getNamespace().getCmd())
                 .withImagePullPolicy(kubernetesConfig.getImagePullPolicy())
                 .withVolumeMounts(new VolumeMountBuilder()
-                        .withName(ExecuteConstant.KRONOS_VOLUME_NAME).withMountPath(kubernetesConfig.getLogPath())
+                        .withName(ExecuteConstant.KRONOS_VOLUME_NAME).withMountPath(kubernetesConfig.getLogPath()+"/"+namespace)
                         .build())
                 .build();
         JobSpec jobSpec = new JobSpecBuilder()

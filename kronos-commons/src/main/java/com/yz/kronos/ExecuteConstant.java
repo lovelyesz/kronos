@@ -12,7 +12,9 @@ public class ExecuteConstant {
 
     public static String KRONOS_EXECUTOR_ENV_NAME = "KRONOS_EXECUTOR_ENV_NAME";
 
-//    public static String KRONOS_EXECUTOR_SYNCHRONIZER = "KRONOS_EXECUTOR_SYNCHRONIZER_";
+    public static String KRONOS_EXECUTOR_SYNCHRONIZER = "KRONOS_EXECUTOR_SYNCHRONIZER_";
+
+    public static String KRONOS_EXECUTOR_FLOW_PROCESS_SET = "KRONOS_EXECUTOR_FLOW_PROCESS_SET";
 
 
     /**

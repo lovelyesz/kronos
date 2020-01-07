@@ -1,5 +1,6 @@
 package com.yz.kronos.schedule.job;
 
+import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.queue.JobQueue;
 
@@ -32,7 +33,7 @@ public interface JobShutdown {
          */
         @Override
         public void shutdown(String execId,KubernetesConfig config) {
-            queue().clear(config.getExecutorQueueNamePre()+execId);
+            queue().clear(ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE +execId);
         }
     }
 
