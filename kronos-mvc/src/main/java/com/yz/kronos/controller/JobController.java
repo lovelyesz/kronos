@@ -22,8 +22,8 @@ public class JobController {
     @Autowired
     JobInfoService jobInfoService;
 
-    @PostMapping(value = "/save")
-    public CallResult save(JobInfoModel jobInfoModel){
+    @PostMapping(value = "/update")
+    public CallResult update(JobInfoModel jobInfoModel){
         final JobInfoModel model = jobInfoService.save(jobInfoModel);
         return CallResultBuilder.success(model);
     }

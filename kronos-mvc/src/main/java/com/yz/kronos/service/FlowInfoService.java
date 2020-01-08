@@ -175,4 +175,17 @@ public class FlowInfoService {
         pageResult.setTotalSize(flowInfoModelPage.getTotalElements());
         return pageResult;
     }
+
+    public void update(FlowInfoModel model) {
+        final FlowInfoModel flowInfoModel = flowInfoRepository.findById(model.getId()).get();
+        final Integer status = model.getStatus();
+        final String cron = model.getCron();
+        if (status!=null){
+            flowInfoModel.setStatus(status);
+        }
+        if (cron!=null){
+            flowInfoModel.setCron(cron);
+        }
+        flowInfoRepository.save(flowInfoModel);
+    }
 }

@@ -65,4 +65,10 @@ public class FlowController {
         return CallResultBuilder.success();
     }
 
+    @PostMapping(value = "/update")
+    public CallResult update(FlowInfoModel model){
+        flowInfoService.update(model);
+        return CallResultBuilder.success();
+    }
+
 }
