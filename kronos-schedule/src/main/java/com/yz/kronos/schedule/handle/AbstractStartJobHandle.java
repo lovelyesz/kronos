@@ -4,12 +4,11 @@ import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.batch.Job;
-import io.fabric8.kubernetes.api.model.batch.JobBuilder;
-import io.fabric8.kubernetes.api.model.batch.JobSpec;
-import io.fabric8.kubernetes.api.model.batch.JobSpecBuilder;
+import io.fabric8.kubernetes.api.model.batch.*;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -122,6 +121,9 @@ public abstract class AbstractStartJobHandle implements JobHandle {
                 .withSpec(jobSpec)
                 .build();
         log.info("request kubernetes api : {}",job);
-        client.batch().jobs().create(job);
+        final MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs = client.batch().jobs();
+        jobs.withName(namespace);
+        jobs.create(job);
+
     }
 }
