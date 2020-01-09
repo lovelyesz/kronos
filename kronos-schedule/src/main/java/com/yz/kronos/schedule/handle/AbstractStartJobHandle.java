@@ -10,6 +10,7 @@ import io.fabric8.kubernetes.api.model.batch.JobSpec;
 import io.fabric8.kubernetes.api.model.batch.JobSpecBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author shanchong
  * @date 2019-12-20
  **/
+@Slf4j
 public abstract class AbstractStartJobHandle implements JobHandle {
 
     /**
@@ -119,6 +121,7 @@ public abstract class AbstractStartJobHandle implements JobHandle {
                 .withMetadata(objectMeta)
                 .withSpec(jobSpec)
                 .build();
+        log.info("request kubernetes api : {}",job);
         client.batch().jobs().create(job);
     }
 }
