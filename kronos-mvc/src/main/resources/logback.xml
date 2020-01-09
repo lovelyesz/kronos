@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>
-    <property resource="application.yml" />
-    <!-- ?????? -->
+    <springProperty scope="context" name="logPath" source="kronos.log-path" />
     <appender name="FILE-APPENDER"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${kronos.log-path}/default/common-default.log.%d{yyyyMMdd}
+            <fileNamePattern>${logPath}/default/common-default.log.%d{yyyyMMdd}
             </fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
