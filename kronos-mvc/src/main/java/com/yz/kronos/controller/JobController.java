@@ -29,7 +29,7 @@ public class JobController {
     public CallResult update(JobInfoModel jobInfoModel){
         final JobInfoModel model = jobInfoService.save(jobInfoModel);
         final Integer shareTotal = jobInfoModel.getShareTotal();
-        jobRelationService.updateShareTotalByJobId(shareTotal,jobInfoModel.getId());
+        jobRelationService.updateShareTotalByJobIdAndFlowId(shareTotal,jobInfoModel.getId(),jobInfoModel.getFlowId());
         return CallResultBuilder.success(model);
     }
 

@@ -18,7 +18,8 @@ public interface JobRelationRepository extends JpaRepository<JobRelationModel,Lo
 
     @Modifying
     @Transactional
-    @Query("update JobRelationModel set shareTotal=:shareTotal where jobId=:jobId")
-    void updateShareTotalByJobId(@Param(value = "shareTotal") Integer shareTotal,
-                                 @Param(value = "jobId") Long jobId);
+    @Query("update JobRelationModel set shareTotal=:shareTotal where jobId=:jobId and flowId=:flowId")
+    void updateShareTotalByJobIdAndFlowId(@Param(value = "shareTotal") Integer shareTotal,
+                                 @Param(value = "jobId") Long jobId,
+                                          @Param(value = "flowId") Long flowId);
 }
