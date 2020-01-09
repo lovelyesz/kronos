@@ -39,4 +39,7 @@ public class JobRelationService {
     }
 
 
+    public void updateShareTotalByJobId(Integer shareTotal, Long jobId) {
+        jobRelationRepository.updateShareTotalByJobId(shareTotal,jobId);
+    }
 }
