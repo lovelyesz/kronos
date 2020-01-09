@@ -2,6 +2,7 @@ package com.yz.kronos.service;
 
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.dao.ExecuteLogRepository;
+import com.yz.kronos.dao.FlowInfoRepository;
 import com.yz.kronos.enu.JobState;
 import com.yz.kronos.model.ExecuteLogModel;
 import com.yz.kronos.model.FlowInfoModel;
@@ -31,7 +32,7 @@ public class ExecuteLogService implements JobExecuteRepository {
     @Autowired
     JobInfoService jobInfoService;
     @Autowired
-    FlowInfoService flowInfoService;
+    FlowInfoRepository flowInfoRepository;
 
     public ExecuteLogModel updateProcess(Long id, JobStatus status){
         final ExecuteLogModel executeLogModel = get(id);
@@ -73,7 +74,7 @@ public class ExecuteLogService implements JobExecuteRepository {
         if (StringUtils.isEmpty(flowName)){
             return listAll(page,limit);
         }
-        final List<FlowInfoModel> flowInfoModelList = flowInfoService.selectByFlowName("%"+flowName+"%");
+        final List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByFlowNameLike("%"+flowName+"%");
         final Set<Long> flowIds = flowInfoModelList.parallelStream().map(FlowInfoModel::getId).collect(Collectors.toSet());
         final Page<ExecuteLogModel> executeLogModelPage = executeLogRepository.findByFlowIdIn(flowIds, PageRequest.of(page, limit, Sort.by(Sort.Order.desc("createTime"))));
         return getExecuteLogModels(executeLogModelPage);
@@ -87,7 +88,7 @@ public class ExecuteLogService implements JobExecuteRepository {
     private PageResult<ExecuteLogModel> getExecuteLogModels(Page<ExecuteLogModel> executeLogModelList) {
         final Set<Long> jobIds = executeLogModelList.map(ExecuteLogModel::getJobId).stream().collect(Collectors.toSet());
         final Set<Long> flowIds = executeLogModelList.map(ExecuteLogModel::getFlowId).stream().collect(Collectors.toSet());
-        List<FlowInfoModel> flowInfoModelList = flowInfoService.selectByIds(flowIds);
+        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByIdIn(flowIds);
         final Map<Long, FlowInfoModel> flowInfoModelMap = flowInfoModelList.parallelStream().collect(Collectors.toMap(FlowInfoModel::getId, p -> p));
         List<JobInfoModel> jobInfoModelList = jobInfoService.selectByIds(jobIds);
         final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModelList.parallelStream().collect(Collectors.toMap(JobInfoModel::getId, p -> p));
