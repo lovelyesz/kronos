@@ -121,7 +121,7 @@ public abstract class AbstractStartJobHandle implements JobHandle {
                 .withSpec(jobSpec)
                 .build();
         log.info("request kubernetes api : {}",job);
-        client.batch().jobs().withName(namespace).create(job);
+        client.inNamespace(namespace).batch().jobs().create(job);
 
     }
 }
