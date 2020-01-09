@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
-import com.yz.kronos.dao.FlowInfoRepository;
-import com.yz.kronos.dao.JobInfoRepository;
-import com.yz.kronos.dao.JobRelationRepository;
-import com.yz.kronos.dao.NamespaceRepository;
+import com.yz.kronos.dao.*;
 import com.yz.kronos.enu.FlowState;
 import com.yz.kronos.enu.JobState;
 import com.yz.kronos.enums.YesNoEnum;
@@ -52,7 +49,7 @@ public class FlowInfoService {
     @Autowired
     private KubernetesConfig kubernetesConfig;
     @Autowired
-    private ExecuteLogService executeLogService;
+    private ExecuteLogRepository executeLogRepository;
 
     public FlowInfoModel get(Long id){
         return flowInfoRepository.findById(id).get();
@@ -121,7 +118,11 @@ public class FlowInfoService {
         //更新工作流状态
         flowInfoRepository.save(flowInfoModel);
 
-        List<ExecuteLogModel> executeLogModelList = executeLogService.findByFlowIdAndState(flowId, JobState.RUNNING,JobState.INIT);
+        List<ExecuteLogModel> executeLogModelList =
+                executeLogRepository.findByFlowIdAndStatusIn(flowId,
+                        Lists.newArrayList(JobState.RUNNING,JobState.INIT).stream()
+                .map(JobState::code).collect(Collectors.toList()));
+
         if (executeLogModelList.isEmpty()){
             log.error("kronos flow not find status is 0 or 1 of execute log flowId:{}",flowId);
             return;
@@ -131,7 +132,8 @@ public class FlowInfoService {
         flowManage.shutdown(execIds,flowId);
 
         executeLogModelList.forEach(executeLogModel->{
-            executeLogService.updateStatus(executeLogModel.getId(),JobState.SHUTDOWN);
+            executeLogRepository.updateStatus(new Date(),JobState.SHUTDOWN.code(),JobState.SHUTDOWN.desc(),
+                    executeLogModel.getId());
         });
 
 
