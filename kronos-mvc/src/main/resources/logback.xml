@@ -5,7 +5,7 @@
     <appender name="FILE-APPENDER"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logFile}/default/common-default.log.%d{yyyyMMdd}
+            <fileNamePattern>${kronos.log-path}/default/common-default.log.%d{yyyyMMdd}
             </fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
