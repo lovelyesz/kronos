@@ -3,6 +3,7 @@ package com.yz.kronos.service;
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.dao.ExecuteLogRepository;
 import com.yz.kronos.dao.FlowInfoRepository;
+import com.yz.kronos.dao.JobInfoRepository;
 import com.yz.kronos.enu.JobState;
 import com.yz.kronos.model.ExecuteLogModel;
 import com.yz.kronos.model.FlowInfoModel;
@@ -30,7 +31,7 @@ public class ExecuteLogService implements JobExecuteRepository {
     @Autowired
     ExecuteLogRepository executeLogRepository;
     @Autowired
-    JobInfoService jobInfoService;
+    JobInfoRepository jobInfoRepository;
     @Autowired
     FlowInfoRepository flowInfoRepository;
 
@@ -90,7 +91,7 @@ public class ExecuteLogService implements JobExecuteRepository {
         final Set<Long> flowIds = executeLogModelList.map(ExecuteLogModel::getFlowId).stream().collect(Collectors.toSet());
         List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByIdIn(flowIds);
         final Map<Long, FlowInfoModel> flowInfoModelMap = flowInfoModelList.parallelStream().collect(Collectors.toMap(FlowInfoModel::getId, p -> p));
-        List<JobInfoModel> jobInfoModelList = jobInfoService.selectByIds(jobIds);
+        List<JobInfoModel> jobInfoModelList = jobInfoRepository.findByIdIn(jobIds);
         final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModelList.parallelStream().collect(Collectors.toMap(JobInfoModel::getId, p -> p));
         executeLogModelList.forEach(e->{
             e.setJobInfo(jobInfoModelMap.getOrDefault(e.getJobId(),new JobInfoModel()));
