@@ -60,9 +60,11 @@ public class SimpleFlowManage extends AbstractFlowManage {
         sortJobListMap.keySet().stream().sorted()
                 .forEach(sort->{
                     if (flowInterceptor.isInterceptor(flowId)){
+                        log.warn("flow is intercepted flowId:{}",flowId);
                         return;
                     }
                     final List<FlowInfo.FlowElement> flowElements = sortJobListMap.getOrDefault(sort,new ArrayList<>());
+                    log.info("flow is start schedule {},{}",flowElements,sort);
                     //同步器的key
                     String synchronizerKey = ExecuteConstant.KRONOS_EXECUTOR_SYNCHRONIZER + System.currentTimeMillis() + "_" + sort;
                     //sort相同的时候任务并行
@@ -77,6 +79,7 @@ public class SimpleFlowManage extends AbstractFlowManage {
                     jobProcessSynchronizer.init(synchronizerKey, (int) count);
                     jobProcessSynchronizer.wait(synchronizerKey, ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,
                             ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
+                    log.info("job finish {}",flowElements);
                 });
     }
 
@@ -88,6 +91,7 @@ public class SimpleFlowManage extends AbstractFlowManage {
     @Override
     public void shutdown(List<String> execIds,Long flowId) {
         execIds.forEach(execId->jobShutdown.shutdown(execId,config));
+        log.warn("flow shutdown {},{}",execIds,flowId);
     }
 
 }
