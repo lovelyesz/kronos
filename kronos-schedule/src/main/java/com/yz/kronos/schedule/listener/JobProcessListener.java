@@ -36,7 +36,7 @@ public class JobProcessListener {
     public SharedIndexInformer<Job> run() {
         Config config = new ConfigBuilder().withMasterUrl(kubernetesConfig.getServiceApi()).build();
         DefaultKubernetesClient client = new DefaultKubernetesClient(config);
-        SharedInformerFactory sharedInformerFactory = client.informers();
+        SharedInformerFactory sharedInformerFactory = client.inNamespace("statement").informers();
         CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
                 .withGroup(kubernetesConfig.getGroupName()).withPlural(Utils.getPluralFromKind(Job.class.getSimpleName()))
                 .withVersion(kubernetesConfig.getApiVersion())
