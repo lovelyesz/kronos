@@ -13,4 +13,6 @@ public interface EventHandlerManage {
 
     List<ResourceEventHandler<Job>> resourceEventHandlerList();
 
+    String namespace();
+
 }

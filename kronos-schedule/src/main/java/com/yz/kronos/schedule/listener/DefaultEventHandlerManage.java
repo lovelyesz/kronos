@@ -14,14 +14,24 @@ import java.util.List;
 public class DefaultEventHandlerManage implements EventHandlerManage {
 
     List<ResourceEventHandler<Job>> resourceEventHandlerList = new ArrayList<>();
+    String namespace;
 
     public void add(ResourceEventHandler<Job> resourceEventHandler){
         resourceEventHandlerList.add(resourceEventHandler);
     }
 
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     @Override
     public List<ResourceEventHandler<Job>> resourceEventHandlerList() {
         return resourceEventHandlerList;
+    }
+
+    @Override
+    public String namespace() {
+        return namespace;
     }
 
 }

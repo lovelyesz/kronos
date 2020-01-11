@@ -26,6 +26,7 @@ public class EventHandlerManageConfig {
         final JobSynchronzeEventHandler jobSynchronzeEventHandler = new JobSynchronzeEventHandler(jobProcessSynchronizer);
         defaultEventHandlerManage.add(jobSynchronzeEventHandler);
         defaultEventHandlerManage.add(executeLogEventHandler);
+        defaultEventHandlerManage.setNamespace("statement");
         return defaultEventHandlerManage;
     }
 
