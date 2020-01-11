@@ -10,4 +10,6 @@ import java.util.Set;
 public interface NamespaceRepository extends JpaRepository<NamespaceInfoModel,Long> {
 
     List<NamespaceInfoModel> findByIdIn(Set<Long> ids);
+
+    List<NamespaceInfoModel> findByIsDelete(Integer isDelete);
 }

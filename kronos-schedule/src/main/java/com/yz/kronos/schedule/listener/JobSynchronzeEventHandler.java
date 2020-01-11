@@ -26,7 +26,7 @@ public class JobSynchronzeEventHandler implements ResourceEventHandler<Job> {
 
     @Override
     public void onAdd(Job obj) {
-        log.info("launch listener to {}",obj.getMetadata().getName());
+        log.info("launch listener to namespace:{} name:{}",obj.getMetadata().getNamespace(),obj.getMetadata().getName());
     }
 
     @Override
@@ -39,11 +39,12 @@ public class JobSynchronzeEventHandler implements ResourceEventHandler<Job> {
         if (succeed==null){
             return;
         }
-        log.info("callback job {} process is ({}/{}/{}/{})",newObj.getMetadata().getName(),
+        final String namespace = newObj.getMetadata().getNamespace();
+        log.info("callback namespace:{} job {} process is ({}/{}/{}/{})", namespace,newObj.getMetadata().getName(),
                 active,succeed,failed,completions);
         if (succeed.equals(completions)){
             Map<String, String> labels = newObj.getMetadata().getLabels();
-            log.info("kubernetes callback success {}",newObj);
+            log.info("kubernetes namespace:{} callback success {}",namespace,newObj);
             String key = labels.get(ExecuteConstant.KRONOS_EXECUTE_SYNCHRONIZER_LABEL_NAME);
             if (key!=null){
                 jobProcessSynchronizer.countDown(key);
@@ -57,7 +58,8 @@ public class JobSynchronzeEventHandler implements ResourceEventHandler<Job> {
         Integer active = obj.getStatus().getActive();
         Integer succeeded = obj.getStatus().getSucceeded();
         Integer failed = obj.getStatus().getFailed();
-        log.info("callback pod {} is closed ({}/{}/{})",obj.getMetadata().getName(),active,succeeded,failed);
+        final String namespace = obj.getMetadata().getNamespace();
+        log.info("callback namespace:{} pod {} is closed ({}/{}/{})",namespace,obj.getMetadata().getName(),active,succeeded,failed);
         Map<String, String> labels = obj.getMetadata().getLabels();
         String key = labels.get(ExecuteConstant.KRONOS_EXECUTE_SYNCHRONIZER_LABEL_NAME);
         if (key!=null){

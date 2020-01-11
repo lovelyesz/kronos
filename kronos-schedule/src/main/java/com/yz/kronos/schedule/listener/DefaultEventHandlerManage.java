@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,14 +15,14 @@ import java.util.List;
 public class DefaultEventHandlerManage implements EventHandlerManage {
 
     List<ResourceEventHandler<Job>> resourceEventHandlerList = new ArrayList<>();
-    String namespace;
+    List<String> namespaceList;
 
     public void add(ResourceEventHandler<Job> resourceEventHandler){
         resourceEventHandlerList.add(resourceEventHandler);
     }
 
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    public void setNamespaceList(List<String> namespaceList) {
+        this.namespaceList = namespaceList;
     }
 
     @Override
@@ -30,8 +31,9 @@ public class DefaultEventHandlerManage implements EventHandlerManage {
     }
 
     @Override
-    public String namespace() {
-        return namespace;
+    public List<String> namespaceList() {
+        return namespaceList;
     }
+
 
 }

@@ -13,6 +13,8 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * kubernetes job listener
  * @author shanchong
@@ -30,25 +32,27 @@ public class JobProcessListener {
         this.eventHandlerManage = eventHandlerManage;
     }
 
+
     /**
      * 启动后开启一个守护进程触发
      */
-    public SharedIndexInformer<Job> run() {
-        Config config = new ConfigBuilder().withMasterUrl(kubernetesConfig.getServiceApi()).build();
-        DefaultKubernetesClient client = new DefaultKubernetesClient(config);
-        SharedInformerFactory sharedInformerFactory = client.inNamespace(eventHandlerManage.namespace()).informers();
-        CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
-                .withGroup(kubernetesConfig.getGroupName()).withPlural(Utils.getPluralFromKind(Job.class.getSimpleName()))
-                .withVersion(kubernetesConfig.getApiVersion())
-                .build();
-        SharedIndexInformer<Job> sharedIndexInformer = sharedInformerFactory
-                .sharedIndexInformerForCustomResource(customResourceDefinitionContext,Job.class, JobList.class,
-                        kubernetesConfig.getResyncPeriodInMillis());
-        sharedIndexInformer.run();
-        for (ResourceEventHandler reh : eventHandlerManage.resourceEventHandlerList()) {
-            sharedIndexInformer.addEventHandler(reh);
+    public void run() {
+        for (String namespace : eventHandlerManage.namespaceList()){
+            Config config = new ConfigBuilder().withMasterUrl(kubernetesConfig.getServiceApi()).build();
+            DefaultKubernetesClient client = new DefaultKubernetesClient(config);
+            SharedInformerFactory sharedInformerFactory = client.inNamespace(namespace).informers();
+            CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
+                    .withGroup(kubernetesConfig.getGroupName()).withPlural(Utils.getPluralFromKind(Job.class.getSimpleName()))
+                    .withVersion(kubernetesConfig.getApiVersion())
+                    .build();
+            SharedIndexInformer<Job> sharedIndexInformer = sharedInformerFactory
+                    .sharedIndexInformerForCustomResource(customResourceDefinitionContext,Job.class, JobList.class,
+                            kubernetesConfig.getResyncPeriodInMillis());
+            sharedIndexInformer.run();
+            for (ResourceEventHandler reh : eventHandlerManage.resourceEventHandlerList()) {
+                sharedIndexInformer.addEventHandler(reh);
+            }
         }
-        return sharedIndexInformer;
     }
 
 }
