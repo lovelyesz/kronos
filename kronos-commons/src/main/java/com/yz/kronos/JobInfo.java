@@ -24,6 +24,8 @@ public class JobInfo {
 
     String synchronizerKey;
 
+    String batchNo;
+
     /**
      * 命名空间
      * @author shanchong

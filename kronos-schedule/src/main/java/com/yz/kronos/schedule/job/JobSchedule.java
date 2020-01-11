@@ -42,7 +42,7 @@ public interface JobSchedule {
             final JobQueue queue = queue();
             final Integer shareTotal = jobInfo.getShareTotal();
             //记录执行日志
-            final Long execId = repository().insert(flowId, jobInfo.getJobId(),shareTotal);
+            final Long execId = repository().insert(flowId, jobInfo.getJobId(),shareTotal,jobInfo.getBatchNo());
             queue.add(ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE +execId,
                     JSONObject.toJSONString(jobInfo),shareTotal);
             final StartJobHandle startJobHandle = new StartJobHandle(config, jobInfo);

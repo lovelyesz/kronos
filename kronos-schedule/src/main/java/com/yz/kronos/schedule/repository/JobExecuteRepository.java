@@ -14,6 +14,6 @@ public interface JobExecuteRepository {
      * @param shareTotal
      * @return 执行id
      */
-    Long insert(Long flowId ,Long jobId,Integer shareTotal);
+    Long insert(Long flowId ,Long jobId,Integer shareTotal,String batchNo);
 
 }

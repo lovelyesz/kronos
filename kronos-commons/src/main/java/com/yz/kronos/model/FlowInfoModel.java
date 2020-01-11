@@ -29,6 +29,8 @@ public class FlowInfoModel extends BaseModel{
 
     private Integer isDelete;
 
+    private String lastBatchNo;
+
     @Transient
     List<JobInfoModel> jobList;
 

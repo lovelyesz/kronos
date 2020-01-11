@@ -75,7 +75,7 @@ public class SimpleFlowManage extends AbstractFlowManage {
                                 jobInfo.setJobId(flowElement.getJobId());
                                 jobSchedule.schedule(flowId, jobInfo,config);
                             });
-                    final long count = flowElements.parallelStream().mapToInt(FlowInfo.FlowElement::getSort).count();
+                    final long count = flowElements.parallelStream().mapToInt(f->f.getJobInfo().getShareTotal()).count();
                     jobProcessSynchronizer.init(synchronizerKey, (int) count);
                     jobProcessSynchronizer.wait(synchronizerKey, ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,
                             ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);

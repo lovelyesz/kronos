@@ -47,6 +47,8 @@ public class ExecuteLogModel {
 
     private Integer failedCount;
 
+    private String batchNo;
+
     @Transient
     private JobInfoModel jobInfo;
     @Transient

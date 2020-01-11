@@ -27,5 +27,7 @@ public class ExecuteConstant {
 
     public static String KRONOS_EXECUTE_ID = "EXECID";
 
+    public static String KRONOS_BATCH_NO = "BATCH_NO";
+
     public static String KRONOS_VOLUME_NAME = "kronos-logfile";
 }

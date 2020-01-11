@@ -30,6 +30,7 @@ public class StartJobHandle extends AbstractStartJobHandle {
     public Map<String, String> labels(String execId) {
         Map<String, String> labels = new HashMap<>(4);
         labels.put(ExecuteConstant.KRONOS_EXECUTE_ID, execId);
+        labels.put(ExecuteConstant.KRONOS_BATCH_NO, jobInfo.getBatchNo());
         labels.put(ExecuteConstant.KRONOS_EXECUTE_SYNCHRONIZER_LABEL_NAME, jobInfo.getSynchronizerKey());
         return labels;
     }

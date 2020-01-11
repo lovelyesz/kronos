@@ -28,4 +28,5 @@ public interface ExecuteLogRepository extends JpaRepository<ExecuteLogModel,Long
                      @Param(value = "remark")String remark,
                      @Param(value = "id")Long id);
 
+    List<ExecuteLogModel> findByBatchNo(String batchNo);
 }

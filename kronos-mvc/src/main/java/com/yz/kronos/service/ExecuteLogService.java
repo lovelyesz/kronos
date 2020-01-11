@@ -1,5 +1,6 @@
 package com.yz.kronos.service;
 
+import com.google.common.collect.Lists;
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.dao.ExecuteLogRepository;
 import com.yz.kronos.dao.FlowInfoRepository;
@@ -71,6 +72,22 @@ public class ExecuteLogService implements JobExecuteRepository {
         return executeLogRepository.findByFlowIdAndStatusIn(flowId, Arrays.stream(jobState).map(JobState::code).collect(Collectors.toList()));
     }
 
+    public List<ExecuteLogModel> findByBatchNo(String batchNo){
+        final List<ExecuteLogModel> executeLogModels = executeLogRepository.findByBatchNo(batchNo);
+        final Set<Long> flowIds = executeLogModels.parallelStream().map(ExecuteLogModel::getFlowId).collect(Collectors.toSet());
+        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByIdIn(flowIds);
+        final Map<Long, FlowInfoModel> flowInfoModelMap = flowInfoModelList.parallelStream().collect(Collectors.toMap(FlowInfoModel::getId, p -> p));
+        final Set<Long> jobIds = executeLogModels.parallelStream().map(ExecuteLogModel::getJobId).collect(Collectors.toSet());
+        List<JobInfoModel> jobInfoModelList = jobInfoRepository.findByIdIn(jobIds);
+        final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModelList.parallelStream().collect(Collectors.toMap(JobInfoModel::getId, p -> p));
+
+        executeLogModels.stream().peek(e->{
+            e.setFlowInfo(flowInfoModelMap.getOrDefault(e.getFlowId(),new FlowInfoModel()));
+            e.setJobInfo(jobInfoModelMap.getOrDefault(e.getJobId(),new JobInfoModel()));
+        });
+        return executeLogModels;
+    }
+
     public PageResult<ExecuteLogModel> page(String flowName,Integer page,Integer limit){
         if (StringUtils.isEmpty(flowName)){
             return listAll(page,limit);
@@ -106,7 +123,7 @@ public class ExecuteLogService implements JobExecuteRepository {
 
 
     @Override
-    public Long insert(Long flowId, Long jobId,Integer shareTotal) {
+    public Long insert(Long flowId, Long jobId,Integer shareTotal,String batchNo) {
         ExecuteLogModel executeLogModel = new ExecuteLogModel();
         executeLogModel.setCreateTime(new Date());
         executeLogModel.setFlowId(flowId);
@@ -117,6 +134,7 @@ public class ExecuteLogService implements JobExecuteRepository {
         executeLogModel.setActiveCount(0);
         executeLogModel.setSucceedCount(0);
         executeLogModel.setFailedCount(0);
+        executeLogModel.setBatchNo(batchNo);
         executeLogRepository.save(executeLogModel);
         return executeLogModel.getId();
     }

@@ -62,7 +62,10 @@ public class FlowInfoService {
             log.error("kronos flow execute fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
             return;
         }
+        final String batchNo = UUID.randomUUID().toString().replaceAll("-","");
+
         flowInfoModel.setStatus(FlowState.RUNNING.code());
+        flowInfoModel.setLastBatchNo(batchNo);
         flowInfoRepository.save(flowInfoModel);
         Long namespaceId = flowInfoModel.getNamespaceId();
         NamespaceInfoModel namespaceInfoModel = namespaceRepository.findById(namespaceId).get();
@@ -89,6 +92,7 @@ public class FlowInfoService {
             namespaceInfo.setImage(namespaceInfoModel.getImage());
             namespaceInfo.setName(namespaceInfoModel.getNsName());
             jobInfo.setNamespace(namespaceInfo);
+            jobInfo.setBatchNo(batchNo);
             flowElement.setJobInfo(jobInfo);
             flowElement.setSort(e.getSort());
             flowElement.setJobId(jobId);
@@ -103,6 +107,7 @@ public class FlowInfoService {
 
         flowInfoModel.setStatus(FlowState.RUNNABLE.code());
         flowInfoRepository.save(flowInfoModel);
+
     }
 
     @Async
