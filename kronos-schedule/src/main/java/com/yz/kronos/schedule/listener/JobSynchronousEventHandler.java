@@ -16,11 +16,11 @@ import java.util.Optional;
  * @date 2019-12-20
  **/
 @Slf4j
-public class JobSynchronzeEventHandler implements ResourceEventHandler<Job> {
+public class JobSynchronousEventHandler implements ResourceEventHandler<Job> {
 
     JobProcessSynchronizer jobProcessSynchronizer;
 
-    public JobSynchronzeEventHandler(JobProcessSynchronizer jobProcessSynchronizer) {
+    public void setJobProcessSynchronizer(JobProcessSynchronizer jobProcessSynchronizer) {
         this.jobProcessSynchronizer = jobProcessSynchronizer;
     }
 
@@ -42,6 +42,7 @@ public class JobSynchronzeEventHandler implements ResourceEventHandler<Job> {
         final String namespace = newObj.getMetadata().getNamespace();
         log.info("callback namespace:{} job {} process is ({}/{}/{}/{})", namespace,newObj.getMetadata().getName(),
                 active,succeed,failed,completions);
+        //执行成功的数量 = 分片的总数
         if (succeed.equals(completions)){
             Map<String, String> labels = newObj.getMetadata().getLabels();
             log.info("kubernetes namespace:{} callback success {}",namespace,newObj);

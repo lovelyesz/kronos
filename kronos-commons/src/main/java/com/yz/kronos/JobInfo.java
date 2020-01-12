@@ -1,6 +1,7 @@
 package com.yz.kronos;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yz.kronos.model.NamespaceInfoModel;
 import lombok.Data;
 
 /**
@@ -38,6 +39,12 @@ public class JobInfo {
         private String image;
 
         private String cmd;
+
+        public NamespaceInfo(NamespaceInfoModel namespaceInfoModel){
+            this.name = namespaceInfoModel.getNsName();
+            this.image = namespaceInfoModel.getImage();
+            this.cmd = namespaceInfoModel.getCmd();
+        }
 
     }
 

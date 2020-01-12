@@ -1,6 +1,8 @@
 package com.yz.kronos.spring.redis;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yz.kronos.ExecuteConstant;
+import com.yz.kronos.JobInfo;
 import com.yz.kronos.schedule.queue.JobQueue;
 import org.redisson.api.RBatch;
 import org.redisson.api.RBlockingQueue;
@@ -19,29 +21,24 @@ public class RedisJobQueue implements JobQueue {
         this.redissonClient = redissonClient;
     }
 
-    /**
-     * 拉取一个
-     *
-     * @return
-     */
     @Override
-    public String lpop(String keyName) {
-        final RBlockingQueue<String> blockingQueue = redissonClient.getBlockingQueue(keyName);
-        return blockingQueue.poll();
+    public String key(Long execId) {
+        return ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE + execId;
     }
 
     /**
      * 存放任务信息
      *
-     * @param s    任务信息
+     * @param jobInfo    任务信息
      * @param size 数量
      */
     @Override
-    public void add(String keyName,String s, int size) {
+    public void add(Long execId,JobInfo jobInfo, int size) {
         final RBatch batch = redissonClient.createBatch();
-        final RBlockingQueueAsync<Object> blockingQueue = batch.getBlockingQueue(keyName);
+        final RBlockingQueueAsync<Object> blockingQueue = batch.getBlockingQueue(key(execId));
         for (int i = 0; i < size; i++) {
-            blockingQueue.addAsync(s);
+            jobInfo.setIndex(i);
+            blockingQueue.addAsync(JSONObject.toJSONString(jobInfo));
             blockingQueue.expireAsync(ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
         }
         batch.execute();
@@ -49,25 +46,13 @@ public class RedisJobQueue implements JobQueue {
     }
 
     /**
-     * 存放一个任务信息
-     *
-     * @param s
-     */
-    @Override
-    public void add(String keyName,String s) {
-        final RBlockingQueue<Object> blockingQueue = redissonClient.getBlockingQueue(keyName);
-        blockingQueue.add(s);
-        blockingQueue.expire(ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME,ExecuteConstant.KRONOS_EXECUTOR_EXPIRE_TIME_UNIT);
-    }
-
-    /**
      * 清空队列
      *
-     * @param key
+     * @param execId
      */
     @Override
-    public void clear(String key) {
-        redissonClient.getBlockingQueue(key).clear();
+    public void clear(Long execId) {
+        redissonClient.getBlockingQueue(key(execId)).clear();
     }
 
 

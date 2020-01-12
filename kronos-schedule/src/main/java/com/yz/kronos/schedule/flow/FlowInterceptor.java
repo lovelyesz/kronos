@@ -1,4 +1,4 @@
-package com.yz.kronos.schedule.intercepter;
+package com.yz.kronos.schedule.flow;
 
 /**
  * 工作流中断器
@@ -11,12 +11,12 @@ public interface FlowInterceptor {
      * @param flowId
      * @return
      */
-    Boolean isInterceptor(Long flowId);
+    Boolean intercept(Long flowId);
 
     class DefaultFlowInterceptor implements FlowInterceptor{
 
         @Override
-        public Boolean isInterceptor(Long flowId) {
+        public Boolean intercept(Long flowId) {
             return false;
         }
 

@@ -1,6 +1,5 @@
 package com.yz.kronos.schedule.job;
 
-import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.queue.JobQueue;
 
@@ -10,31 +9,18 @@ import com.yz.kronos.schedule.queue.JobQueue;
  */
 public interface JobShutdown {
 
-    /**
-     * 任务信息队列
-     * @return
-     */
-    JobQueue queue();
 
     /**
      * 任务关停
      * @param execId
      * @param config
      */
-    void shutdown(String execId, KubernetesConfig config);
+    void shutdown(Long execId, KubernetesConfig config);
 
-
-    abstract class BaseJobShutdown implements JobShutdown {
-
-        /**
-         * 任务关停
-         *
-         * @param execId
-         */
-        @Override
-        public void shutdown(String execId,KubernetesConfig config) {
-            queue().clear(ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE +execId);
-        }
-    }
+    /**
+     * 任务信息通道
+     * @return
+     */
+    JobQueue jobQueue();
 
 }

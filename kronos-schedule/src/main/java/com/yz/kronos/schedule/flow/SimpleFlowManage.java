@@ -3,13 +3,13 @@ package com.yz.kronos.schedule.flow;
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
-import com.yz.kronos.schedule.intercepter.FlowInterceptor;
-import com.yz.kronos.schedule.job.JobSchedule;
-import com.yz.kronos.schedule.job.JobShutdown;
+import com.yz.kronos.schedule.job.JobLaunchManage;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -21,25 +21,20 @@ import java.util.stream.Collectors;
 public class SimpleFlowManage extends AbstractFlowManage {
 
     KubernetesConfig config;
-    JobSchedule jobSchedule;
     JobProcessSynchronizer jobProcessSynchronizer;
-    JobShutdown jobShutdown;
     FlowInterceptor flowInterceptor;
+    JobLaunchManage jobLaunchManage;
 
     public void setConfig(KubernetesConfig config) {
         this.config = config;
     }
 
-    public void setJobSchedule(JobSchedule jobSchedule) {
-        this.jobSchedule = jobSchedule;
+    public void setJobLaunchManage(JobLaunchManage jobLaunchManage) {
+        this.jobLaunchManage = jobLaunchManage;
     }
 
     public void setJobProcessSynchronizer(JobProcessSynchronizer jobProcessSynchronizer) {
         this.jobProcessSynchronizer = jobProcessSynchronizer;
-    }
-
-    public void setJobShutdown(JobShutdown jobShutdown) {
-        this.jobShutdown = jobShutdown;
     }
 
     public void setFlowInterceptor(FlowInterceptor flowInterceptor) {
@@ -59,7 +54,7 @@ public class SimpleFlowManage extends AbstractFlowManage {
                 .collect(Collectors.groupingBy(FlowInfo.FlowElement::getSort, Collectors.toList()));
         sortJobListMap.keySet().stream().sorted()
                 .forEach(sort->{
-                    if (flowInterceptor.isInterceptor(flowId)){
+                    if (flowInterceptor.intercept(flowId)){
                         log.warn("flow is intercepted flowId:{}",flowId);
                         return;
                     }
@@ -73,7 +68,7 @@ public class SimpleFlowManage extends AbstractFlowManage {
                                 final JobInfo jobInfo = flowElement.getJobInfo();
                                 jobInfo.setSynchronizerKey(synchronizerKey);
                                 jobInfo.setJobId(flowElement.getJobId());
-                                jobSchedule.schedule(flowId, jobInfo,config);
+                                jobLaunchManage.schedule(flowId, jobInfo,config);
                             });
                     final long count = flowElements.parallelStream().mapToInt(f->f.getJobInfo().getShareTotal()).count();
                     jobProcessSynchronizer.init(synchronizerKey, (int) count);
@@ -89,8 +84,8 @@ public class SimpleFlowManage extends AbstractFlowManage {
      * @param execIds
      */
     @Override
-    public void shutdown(List<String> execIds,Long flowId) {
-        execIds.forEach(execId->jobShutdown.shutdown(execId,config));
+    public void shutdown(List<Long> execIds,Long flowId) {
+        execIds.forEach(execId-> jobLaunchManage.shutdown(execId,config));
         log.warn("flow shutdown {},{}",execIds,flowId);
     }
 

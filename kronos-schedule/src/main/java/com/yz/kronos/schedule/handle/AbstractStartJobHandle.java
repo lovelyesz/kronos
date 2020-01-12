@@ -22,14 +22,6 @@ import java.util.Map;
 public abstract class AbstractStartJobHandle implements JobHandle {
 
     /**
-     * 停止任务
-     */
-    @Override
-    public void stopJob() {
-
-    }
-
-    /**
      * 标签
      * @param execId
      * @return

@@ -3,15 +3,12 @@ package com.yz.kronos.spring;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.SimpleFlowManage;
-import com.yz.kronos.schedule.intercepter.FlowInterceptor;
-import com.yz.kronos.schedule.job.DefaultJobSchedule;
-import com.yz.kronos.schedule.job.DefaultJobShutdown;
-import com.yz.kronos.schedule.job.JobSchedule;
-import com.yz.kronos.schedule.job.JobShutdown;
+import com.yz.kronos.schedule.flow.FlowInterceptor;
+import com.yz.kronos.schedule.job.*;
 import com.yz.kronos.schedule.listener.DefaultEventHandlerManage;
 import com.yz.kronos.schedule.listener.EventHandlerManage;
 import com.yz.kronos.schedule.listener.JobProcessListener;
-import com.yz.kronos.schedule.listener.JobSynchronzeEventHandler;
+import com.yz.kronos.schedule.listener.JobSynchronousEventHandler;
 import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.schedule.repository.DefaultJobExecuteRepository;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
@@ -56,16 +53,26 @@ public class KronosAutoConfiguration {
     }
 
     /**
+     * 维护任务分片的同步器
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobSynchronousEventHandler jobSynchronousEventHandler(JobProcessSynchronizer jobProcessSynchronizer){
+        final JobSynchronousEventHandler jobSynchronousEventHandler = new JobSynchronousEventHandler();
+        jobSynchronousEventHandler.setJobProcessSynchronizer(jobProcessSynchronizer);
+        return jobSynchronousEventHandler;
+    }
+
+    /**
      * 任务监听处理管理
      * @return
      */
     @Bean
     @ConditionalOnMissingBean
-    public EventHandlerManage eventHandlerManage(JobProcessSynchronizer jobProcessSynchronizer){
+    public EventHandlerManage eventHandlerManage(JobSynchronousEventHandler jobSynchronousEventHandler){
         final DefaultEventHandlerManage defaultEventHandlerManage = new DefaultEventHandlerManage();
-        //维护任务分片的同步器
-        final JobSynchronzeEventHandler jobSynchronzeEventHandler = new JobSynchronzeEventHandler(jobProcessSynchronizer);
-        defaultEventHandlerManage.add(jobSynchronzeEventHandler);
+        defaultEventHandlerManage.add(jobSynchronousEventHandler);
         return defaultEventHandlerManage;
     }
 
@@ -78,32 +85,19 @@ public class KronosAutoConfiguration {
     @Bean(initMethod = "run")
     public JobProcessListener processListener(KubernetesConfig kubernetesConfig,
                                               EventHandlerManage eventHandlerManage){
-        return new JobProcessListener(kubernetesConfig,eventHandlerManage);
+        final JobProcessListener jobProcessListener = new JobProcessListener();
+        jobProcessListener.setEventHandlerManage(eventHandlerManage);
+        jobProcessListener.setKubernetesConfig(kubernetesConfig);
+        return jobProcessListener;
     }
 
-    /**
-     * 任务调度器
-     * @param kubernetesConfig
-     * @param jobQueue
-     * @return
-     */
     @Bean
     @ConditionalOnMissingBean
-    public JobSchedule jobSchedule(KubernetesConfig kubernetesConfig,
-                                   JobQueue jobQueue,
-                                   JobExecuteRepository jobExecuteRepository){
-        return new DefaultJobSchedule(kubernetesConfig,jobQueue,jobExecuteRepository);
-    }
-
-    /**
-     * 任务关停器
-     * @param jobQueue
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public JobShutdown jobShutdown(JobQueue jobQueue){
-        return new DefaultJobShutdown(jobQueue);
+    public JobLaunchManage jobExecuteManage(JobQueue jobQueue, JobExecuteRepository jobExecuteRepository){
+        final SimpleJobLaunchManage simpleJobManage = new SimpleJobLaunchManage();
+        simpleJobManage.setJobExecuteRepository(jobExecuteRepository);
+        simpleJobManage.setJobQueue(jobQueue);
+        return simpleJobManage;
     }
 
     @Bean
@@ -126,22 +120,21 @@ public class KronosAutoConfiguration {
 
     /**
      * 工作流调度器
-     * @param jobSchedule
+     * @param jobLaunchManage
      * @return
      */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(JobSchedule.class)
     public AbstractFlowManage flowManage(KubernetesConfig kubernetesConfig,
-                                           JobSchedule jobSchedule, JobShutdown jobShutdown,
+                                         JobLaunchManage jobLaunchManage,
                                          JobProcessSynchronizer jobProcessSynchronizer,
                                          FlowInterceptor flowInterceptor){
         final SimpleFlowManage simpleFlowManage = new SimpleFlowManage();
         simpleFlowManage.setConfig(kubernetesConfig);
         simpleFlowManage.setFlowInterceptor(flowInterceptor);
         simpleFlowManage.setJobProcessSynchronizer(jobProcessSynchronizer);
-        simpleFlowManage.setJobSchedule(jobSchedule);
-        simpleFlowManage.setJobShutdown(jobShutdown);
+        simpleFlowManage.setJobLaunchManage(jobLaunchManage);
         return simpleFlowManage;
     }
 

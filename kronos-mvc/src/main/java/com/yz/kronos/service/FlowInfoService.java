@@ -84,13 +84,9 @@ public class FlowInfoService {
             final Long jobId = e.getJobId();
             final JobInfoModel jobInfoModel = jobInfoModelMap.get(jobId);
             jobInfo.setClazz(jobInfoModel.getClazz());
-            jobInfo.setIndex(i);
             jobInfo.setShareTotal(e.getShareTotal());
             jobInfo.setResources(JSONObject.parseObject(jobInfoModel.getResources()));
-            final JobInfo.NamespaceInfo namespaceInfo = new JobInfo.NamespaceInfo();
-            namespaceInfo.setCmd(namespaceInfoModel.getCmd());
-            namespaceInfo.setImage(namespaceInfoModel.getImage());
-            namespaceInfo.setName(namespaceInfoModel.getNsName());
+            final JobInfo.NamespaceInfo namespaceInfo = new JobInfo.NamespaceInfo(namespaceInfoModel);
             jobInfo.setNamespace(namespaceInfo);
             jobInfo.setBatchNo(batchNo);
             flowElement.setJobInfo(jobInfo);
@@ -132,7 +128,7 @@ public class FlowInfoService {
             log.error("kronos flow not find status is 0 or 1 of execute log flowId:{}",flowId);
             return;
         }
-        final List<String> execIds = executeLogModelList.parallelStream().map(e->e.getId().toString())
+        final List<Long> execIds = executeLogModelList.parallelStream().map(e->e.getId())
                 .collect(Collectors.toList());
         flowManage.shutdown(execIds,flowId);
 

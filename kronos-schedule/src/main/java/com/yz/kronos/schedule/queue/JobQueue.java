@@ -1,5 +1,7 @@
 package com.yz.kronos.schedule.queue;
 
+import com.yz.kronos.JobInfo;
+
 /**
  * 任务信息队列，用于存放任务信息，executor进行消费
  * @author shanchong
@@ -7,29 +9,19 @@ package com.yz.kronos.schedule.queue;
  **/
 public interface JobQueue {
 
-    /**
-     * 拉取一个
-     * @return
-     */
-    String lpop(String key);
-
+    String key(Long execId);
     /**
      * 存放任务信息
-     * @param s 任务信息
+     * @param execId
+     * @param jobInfo 任务信息
      * @param size 数量
      */
-    void add(String key,String s,int size);
-
-    /**
-     * 存放一个任务信息
-     * @param s
-     */
-    void add(String key,String s);
+    void add(Long execId,JobInfo jobInfo, int size);
 
     /**
      * 清空队列
-     * @param key
+     * @param execId
      */
-    void clear(String key);
+    void clear(Long execId);
 
 }

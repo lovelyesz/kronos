@@ -13,10 +13,5 @@ public interface JobHandle {
      */
     void startJob(String execId);
 
-    /**
-     * 停止任务
-     */
-    void stopJob();
-
 
 }

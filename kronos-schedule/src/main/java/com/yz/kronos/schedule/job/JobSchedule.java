@@ -1,10 +1,7 @@
 package com.yz.kronos.schedule.job;
 
-import com.alibaba.fastjson.JSONObject;
-import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
-import com.yz.kronos.schedule.handle.StartJobHandle;
 import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
 
@@ -24,32 +21,15 @@ public interface JobSchedule {
     Long schedule(Long flowId, JobInfo jobInfo, KubernetesConfig config);
 
     /**
-     * 任务信息队列
-     * @return
-     */
-    JobQueue queue();
-
-    /**
      * 任务执行记录库
      * @return
      */
     JobExecuteRepository repository();
 
-    abstract class BaseJobSchedule implements JobSchedule {
-
-        @Override
-        public Long schedule(Long flowId,JobInfo jobInfo,KubernetesConfig config) {
-            final JobQueue queue = queue();
-            final Integer shareTotal = jobInfo.getShareTotal();
-            //记录执行日志
-            final Long execId = repository().insert(flowId, jobInfo.getJobId(),shareTotal,jobInfo.getBatchNo());
-            queue.add(ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE +execId,
-                    JSONObject.toJSONString(jobInfo),shareTotal);
-            final StartJobHandle startJobHandle = new StartJobHandle(config, jobInfo);
-            startJobHandle.startJob(execId.toString());
-
-            return execId;
-        }
-    }
+    /**
+     * 任务信息通道
+     * @return
+     */
+    JobQueue jobQueue();
 
 }

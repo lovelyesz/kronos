@@ -26,12 +26,13 @@ public class JobProcessListener {
     KubernetesConfig kubernetesConfig;
     EventHandlerManage eventHandlerManage;
 
-    public JobProcessListener(KubernetesConfig kubernetesConfig,
-                              EventHandlerManage eventHandlerManage) {
+    public void setKubernetesConfig(KubernetesConfig kubernetesConfig) {
         this.kubernetesConfig = kubernetesConfig;
-        this.eventHandlerManage = eventHandlerManage;
     }
 
+    public void setEventHandlerManage(EventHandlerManage eventHandlerManage) {
+        this.eventHandlerManage = eventHandlerManage;
+    }
 
     /**
      * 启动后开启一个守护进程触发
