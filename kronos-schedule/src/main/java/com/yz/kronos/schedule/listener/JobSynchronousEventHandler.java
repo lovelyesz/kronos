@@ -1,8 +1,7 @@
 package com.yz.kronos.schedule.listener;
 
 import com.yz.kronos.ExecuteConstant;
-import com.yz.kronos.message.alert.AlertHandler;
-import com.yz.kronos.message.alert.DefaultAlertHandler;
+import com.yz.kronos.message.MessageHandler;
 import com.yz.kronos.schedule.execption.ScheduleException;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import io.fabric8.kubernetes.api.model.batch.Job;
@@ -11,7 +10,6 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 任务进程同步器处理
@@ -28,14 +26,14 @@ public class JobSynchronousEventHandler implements ResourceEventHandler<Job> {
     /**
      * 告警处理
      */
-    AlertHandler alertHandler = new DefaultAlertHandler();
+    MessageHandler messageHandler;
 
     public void setJobProcessSynchronizer(JobProcessSynchronizer jobProcessSynchronizer) {
         this.jobProcessSynchronizer = jobProcessSynchronizer;
     }
 
-    public void setAlertHandler(final AlertHandler alertHandler) {
-        this.alertHandler = alertHandler;
+    public void setAlertHandler(final MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
     }
 
     @Override
@@ -58,9 +56,9 @@ public class JobSynchronousEventHandler implements ResourceEventHandler<Job> {
         log.info("callback namespace:{} job {} process is ({}/{}/{}/{})", namespace,newObj.getMetadata().getName(),
                 active,succeed,failed,completions);
         //失败后告警
-        if (failed>0){
-            alertHandler.handle(new ScheduleException(newObj.getMetadata().getName()+" execute fail labels="
-                    +newObj.getMetadata().getLabels()));
+        if (messageHandler!=null && failed>0){
+            messageHandler.handle("[Kronos系统异常告警]",newObj.getMetadata().getName()+" execute fail labels="
+                    +newObj.getMetadata().getLabels());
         }
         //执行成功的数量 = 分片的总数
         if (succeed.equals(completions)){

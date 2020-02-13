@@ -1,6 +1,6 @@
-package com.yz.kronos.message.service;
+package com.yz.kronos.client;
 
-import com.yz.kronos.message.config.EmailConfig;
+import com.yz.kronos.config.EmailConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;

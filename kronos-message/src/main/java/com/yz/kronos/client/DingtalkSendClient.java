@@ -1,7 +1,7 @@
-package com.yz.kronos.message.service;
+package com.yz.kronos.client;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yz.kronos.message.config.DingConfig;
+import com.yz.kronos.config.DingConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 

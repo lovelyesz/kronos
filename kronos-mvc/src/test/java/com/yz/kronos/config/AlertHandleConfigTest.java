@@ -1,6 +1,6 @@
 package com.yz.kronos.config;
 
-import com.yz.kronos.message.alert.AlertHandler;
+import com.yz.kronos.alert.AlertHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

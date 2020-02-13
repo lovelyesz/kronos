@@ -1,4 +1,4 @@
-package com.yz.kronos.message.config;
+package com.yz.kronos.config;
 
 import lombok.Data;
 

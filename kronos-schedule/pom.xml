@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>com.yz.kronos</groupId>
-            <artifactId>kronos-alert</artifactId>
+            <artifactId>kronos-message</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

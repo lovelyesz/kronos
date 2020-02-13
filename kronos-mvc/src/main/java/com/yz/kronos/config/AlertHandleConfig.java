@@ -1,8 +1,7 @@
 package com.yz.kronos.config;
 
-import com.yz.kronos.message.alert.AlertHandler;
-import com.yz.kronos.message.alert.DingAlertHandler;
-import com.yz.kronos.message.config.MessageConfig;
+import com.yz.kronos.message.MessageHandler;
+import com.yz.kronos.message.SingletonMessageHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +22,8 @@ public class AlertHandleConfig {
 
     @Bean
     @ConditionalOnBean(value = MessageConfig.class)
-    public AlertHandler alertHandler(MessageConfig messageConfig){
-        return new DingAlertHandler(messageConfig);
+    public MessageHandler alertHandler(MessageConfig messageConfig){
+        return new SingletonMessageHandler(messageConfig,MessageType.DING,MessageType.EMAIL);
     }
 
 }
