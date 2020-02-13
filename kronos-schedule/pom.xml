@@ -52,6 +52,11 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.yz.kronos</groupId>
+            <artifactId>kronos-alert</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

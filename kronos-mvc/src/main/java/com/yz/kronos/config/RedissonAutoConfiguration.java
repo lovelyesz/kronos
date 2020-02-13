@@ -6,6 +6,9 @@ import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +19,8 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 @EnableConfigurationProperties(RedissonProperties.class)
-public class RedisConfig {
+//@ConditionalOnProperty(prefix = "redisson.sentinel",name = "masterName")
+public class RedissonAutoConfiguration {
 
     @Bean
     public RedissonClient redissonClient(RedissonProperties redissonProperties){

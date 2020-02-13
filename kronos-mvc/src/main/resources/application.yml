@@ -14,19 +14,24 @@ spring:
       username: root
       password: root
       url: jdbc:mysql://10.200.46.238:3306/kronos?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-
   jpa:
     show-sql: true
+  mail:
+    host: smtp.yunzongnet.com
+    username: zhifu@yunzongnet.com
+    password: 4HwxfI7b
+    port: 994
+    protocol: smtps
+  profiles:
+    active: dev
 
 redisson:
   sentinel:
-    masterName: paygate
-    sentinelAddresses:
+    master-name: paygate
+    sentinel-addresses:
       - redis://ds.redis3-1.yunzong:26379
       - redis://ds.redis3-2.yunzong:26379
       - redis://ds.redis3-3.yunzong:26379
-
-
 kronos:
   enable: true
   service-api: http://10.200.46.239:8080
@@ -37,3 +42,12 @@ kronos:
   log-path: /data/application/logs/kronos/
   resync-period-in-millis: 60000
 
+alert:
+  email:
+    receiver: shanchong@yunzongnet.com
+    host: smtp.yunzongnet.com
+    form: zhifu@yunzongnet.com
+    username: zhifu@yunzongnet.com
+    password: 4HwxfI7b
+  ding:
+    token: 11eda069fb8e3af56e8cb50e0bf5e17bef5f5af9006d035a8b368035acb41d3c

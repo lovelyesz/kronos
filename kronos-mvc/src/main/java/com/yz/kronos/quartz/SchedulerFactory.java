@@ -3,6 +3,7 @@ package com.yz.kronos.quartz;
 import com.yz.kronos.dao.FlowInfoRepository;
 import com.yz.kronos.enu.FlowState;
 import com.yz.kronos.model.FlowInfoModel;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2019-11-13
  **/
 //@Component
+@Slf4j
 public class SchedulerFactory {
 
     @Autowired
@@ -35,6 +37,7 @@ public class SchedulerFactory {
                 addJob(flowInfoModel);
             } catch (SchedulerException e1) {
                 e1.printStackTrace();
+                log.error("load job fail",e1);
             }
         });
         scheduler.start();

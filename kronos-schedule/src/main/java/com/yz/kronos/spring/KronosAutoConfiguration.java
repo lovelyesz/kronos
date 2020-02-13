@@ -1,6 +1,7 @@
 package com.yz.kronos.spring;
 
 import com.yz.kronos.KubernetesConfig;
+import com.yz.kronos.message.alert.AlertHandler;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.SimpleFlowManage;
 import com.yz.kronos.schedule.flow.FlowInterceptor;
@@ -58,9 +59,11 @@ public class KronosAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public JobSynchronousEventHandler jobSynchronousEventHandler(JobProcessSynchronizer jobProcessSynchronizer){
+    public JobSynchronousEventHandler jobSynchronousEventHandler(JobProcessSynchronizer jobProcessSynchronizer,
+                                                                 AlertHandler alertHandler){
         final JobSynchronousEventHandler jobSynchronousEventHandler = new JobSynchronousEventHandler();
         jobSynchronousEventHandler.setJobProcessSynchronizer(jobProcessSynchronizer);
+        jobSynchronousEventHandler.setAlertHandler(alertHandler);
         return jobSynchronousEventHandler;
     }
 

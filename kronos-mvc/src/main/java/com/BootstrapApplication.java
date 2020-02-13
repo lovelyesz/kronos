@@ -1,6 +1,7 @@
 package com;
 
 import com.yz.kronos.quartz.SchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,6 @@ public class BootstrapApplication {
     public SchedulerFactory schedulerFactory(){
         return new SchedulerFactory();
     }
-
 
 
 }

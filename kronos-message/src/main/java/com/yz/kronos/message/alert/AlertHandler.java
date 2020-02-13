@@ -1,4 +1,4 @@
-package com.yz.kronos.alert;
+package com.yz.kronos.message.alert;
 
 /**
  * 告警处理器

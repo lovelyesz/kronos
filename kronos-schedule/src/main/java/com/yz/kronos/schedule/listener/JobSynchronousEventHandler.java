@@ -1,6 +1,9 @@
 package com.yz.kronos.schedule.listener;
 
 import com.yz.kronos.ExecuteConstant;
+import com.yz.kronos.message.alert.AlertHandler;
+import com.yz.kronos.message.alert.DefaultAlertHandler;
+import com.yz.kronos.schedule.execption.ScheduleException;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobStatus;
@@ -18,10 +21,21 @@ import java.util.Optional;
 @Slf4j
 public class JobSynchronousEventHandler implements ResourceEventHandler<Job> {
 
+    /**
+     * 任务进度同步器
+     */
     JobProcessSynchronizer jobProcessSynchronizer;
+    /**
+     * 告警处理
+     */
+    AlertHandler alertHandler = new DefaultAlertHandler();
 
     public void setJobProcessSynchronizer(JobProcessSynchronizer jobProcessSynchronizer) {
         this.jobProcessSynchronizer = jobProcessSynchronizer;
+    }
+
+    public void setAlertHandler(final AlertHandler alertHandler) {
+        this.alertHandler = alertHandler;
     }
 
     @Override
@@ -39,9 +53,15 @@ public class JobSynchronousEventHandler implements ResourceEventHandler<Job> {
         if (succeed==null){
             return;
         }
+
         final String namespace = newObj.getMetadata().getNamespace();
         log.info("callback namespace:{} job {} process is ({}/{}/{}/{})", namespace,newObj.getMetadata().getName(),
                 active,succeed,failed,completions);
+        //失败后告警
+        if (failed>0){
+            alertHandler.handle(new ScheduleException(newObj.getMetadata().getName()+" execute fail labels="
+                    +newObj.getMetadata().getLabels()));
+        }
         //执行成功的数量 = 分片的总数
         if (succeed.equals(completions)){
             Map<String, String> labels = newObj.getMetadata().getLabels();

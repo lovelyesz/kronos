@@ -1,4 +1,4 @@
-package com.yz.kronos.alert;
+package com.yz.kronos.message.alert;
 
 /**
  * 默认的告警处理类
