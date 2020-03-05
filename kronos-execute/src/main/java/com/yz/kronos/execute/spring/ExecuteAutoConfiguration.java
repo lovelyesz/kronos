@@ -7,7 +7,6 @@ import com.yz.kronos.execute.IsolatedJavaJob;
 import com.yz.kronos.execute.JobInfoQueue;
 import com.yz.kronos.message.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 public class ExecuteAutoConfiguration implements ApplicationContextAware {
 
     @Override
-    public void setApplicationContext(@NotNull ApplicationContext applicationContext) {
+    public void setApplicationContext(ApplicationContext applicationContext) {
         MessageHandler alertHandler = null;
         String execId = System.getenv(ExecuteConstant.KRONOS_EXECUTE_ID);
         log.info("kronos executor start... execId:{}",execId);

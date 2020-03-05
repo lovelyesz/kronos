@@ -33,7 +33,7 @@ public class DingtalkSendClient {
 
         Request request = new Request.Builder()
                 .header("Content-Type", "application/json; charset=utf-8")
-                .post(RequestBody.create(body.toJSONString(),MediaType.parse("application/json; charset=utf-8")))
+                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body.toJSONString()))
                 .url(String.format(DING_WEBHOOK, config.getToken())).build();
         Response response = null;
         try {
