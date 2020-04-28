@@ -1,8 +1,8 @@
 package com.yz.kronos.config;
 
 import com.yz.kronos.ExecuteConstant;
-import com.yz.kronos.enu.JobState;
-import com.yz.kronos.model.ExecuteLogModel;
+import com.yz.kronos.schedule.enu.JobState;
+import com.yz.kronos.schedule.model.ExecuteLogModel;
 import com.yz.kronos.service.ExecuteLogService;
 import com.yz.kronos.util.ExecuteUtil;
 import io.fabric8.kubernetes.api.model.batch.Job;

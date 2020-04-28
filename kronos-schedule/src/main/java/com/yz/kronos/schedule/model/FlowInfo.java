@@ -1,4 +1,4 @@
-package com.yz.kronos.schedule.flow;
+package com.yz.kronos.schedule.model;
 
 import com.yz.kronos.JobInfo;
 import lombok.Data;

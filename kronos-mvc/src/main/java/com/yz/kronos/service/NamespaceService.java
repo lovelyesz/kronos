@@ -2,7 +2,7 @@ package com.yz.kronos.service;
 
 import com.yz.kronos.dao.NamespaceRepository;
 import com.yz.kronos.enums.YesNoEnum;
-import com.yz.kronos.model.NamespaceInfoModel;
+import com.yz.kronos.schedule.model.NamespaceInfoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;

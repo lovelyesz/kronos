@@ -1,6 +1,6 @@
 package com.yz.kronos.dao;
 
-import com.yz.kronos.model.ExecuteLogModel;
+import com.yz.kronos.schedule.model.ExecuteLogModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

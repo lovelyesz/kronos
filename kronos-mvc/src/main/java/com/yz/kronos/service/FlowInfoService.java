@@ -6,16 +6,13 @@ import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.dao.*;
-import com.yz.kronos.enu.FlowState;
-import com.yz.kronos.enu.JobState;
+import com.yz.kronos.schedule.enu.FlowState;
+import com.yz.kronos.schedule.enu.JobState;
 import com.yz.kronos.enums.YesNoEnum;
-import com.yz.kronos.model.*;
 import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
-import com.yz.kronos.schedule.flow.FlowInfo;
+import com.yz.kronos.schedule.model.FlowInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -25,7 +22,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**

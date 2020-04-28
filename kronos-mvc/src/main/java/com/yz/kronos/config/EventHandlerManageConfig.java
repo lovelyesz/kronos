@@ -1,18 +1,15 @@
 package com.yz.kronos.config;
 
 import com.yz.kronos.dao.NamespaceRepository;
-import com.yz.kronos.enums.YesNoEnum;
-import com.yz.kronos.model.NamespaceInfoModel;
+import com.yz.kronos.schedule.model.NamespaceInfoModel;
 import com.yz.kronos.schedule.listener.DefaultEventHandlerManage;
 import com.yz.kronos.schedule.listener.EventHandlerManage;
 import com.yz.kronos.schedule.listener.JobSynchronousEventHandler;
-import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * k8s任务监听-更新执行记录

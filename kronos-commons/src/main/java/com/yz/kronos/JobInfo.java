@@ -1,7 +1,7 @@
 package com.yz.kronos;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yz.kronos.model.NamespaceInfoModel;
+import com.yz.kronos.schedule.model.NamespaceInfoModel;
 import lombok.Data;
 
 /**

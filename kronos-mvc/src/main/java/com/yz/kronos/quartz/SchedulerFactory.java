@@ -1,8 +1,8 @@
 package com.yz.kronos.quartz;
 
 import com.yz.kronos.dao.FlowInfoRepository;
-import com.yz.kronos.enu.FlowState;
-import com.yz.kronos.model.FlowInfoModel;
+import com.yz.kronos.schedule.enu.FlowState;
+import com.yz.kronos.schedule.model.FlowInfoModel;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;

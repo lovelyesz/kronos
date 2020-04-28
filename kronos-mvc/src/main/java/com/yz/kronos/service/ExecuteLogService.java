@@ -1,15 +1,14 @@
 package com.yz.kronos.service;
 
-import com.google.common.collect.Lists;
 import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.dao.ExecuteLogRepository;
 import com.yz.kronos.dao.FlowInfoRepository;
 import com.yz.kronos.dao.JobInfoRepository;
-import com.yz.kronos.enu.JobState;
-import com.yz.kronos.model.ExecuteLogModel;
-import com.yz.kronos.model.FlowInfoModel;
-import com.yz.kronos.model.JobInfoModel;
-import com.yz.kronos.model.PageResult;
+import com.yz.kronos.schedule.enu.JobState;
+import com.yz.kronos.schedule.model.ExecuteLogModel;
+import com.yz.kronos.schedule.model.FlowInfoModel;
+import com.yz.kronos.schedule.model.JobInfoModel;
+import com.yz.kronos.schedule.model.PageResult;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
 import io.fabric8.kubernetes.api.model.batch.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;

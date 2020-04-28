@@ -1,8 +1,8 @@
 package com.yz.kronos.config;
 
 import com.yz.kronos.dao.FlowInfoRepository;
-import com.yz.kronos.enu.FlowState;
-import com.yz.kronos.model.FlowInfoModel;
+import com.yz.kronos.schedule.enu.FlowState;
+import com.yz.kronos.schedule.model.FlowInfoModel;
 import com.yz.kronos.schedule.flow.FlowInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

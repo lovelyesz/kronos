@@ -1,4 +1,4 @@
-package com.yz.kronos.enu;
+package com.yz.kronos.schedule.enu;
 
 /**
  * @author shanchong

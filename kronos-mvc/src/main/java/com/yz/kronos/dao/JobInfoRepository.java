@@ -1,7 +1,7 @@
 package com.yz.kronos.dao;
 
 
-import com.yz.kronos.model.JobInfoModel;
+import com.yz.kronos.schedule.model.JobInfoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

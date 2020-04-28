@@ -1,6 +1,6 @@
 package com.yz.kronos.controller;
 
-import com.yz.kronos.model.JobRelationModel;
+import com.yz.kronos.schedule.model.JobRelationModel;
 import com.yz.kronos.service.JobRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

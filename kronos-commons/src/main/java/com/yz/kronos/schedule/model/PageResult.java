@@ -1,4 +1,4 @@
-package com.yz.kronos.model;
+package com.yz.kronos.schedule.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

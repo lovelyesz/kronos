@@ -1,9 +1,8 @@
 package com.yz.kronos.controller;
 
-import com.yz.kronos.CallResultConstant;
-import com.yz.kronos.model.CallResult;
-import com.yz.kronos.model.CallResultBuilder;
-import com.yz.kronos.model.JobInfoModel;
+import com.yz.kronos.schedule.model.CallResult;
+import com.yz.kronos.schedule.model.CallResultBuilder;
+import com.yz.kronos.schedule.model.JobInfoModel;
 import com.yz.kronos.service.JobInfoService;
 import com.yz.kronos.service.JobRelationService;
 import org.springframework.beans.factory.annotation.Autowired;

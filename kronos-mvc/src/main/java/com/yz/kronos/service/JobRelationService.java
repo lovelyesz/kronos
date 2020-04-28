@@ -2,7 +2,7 @@ package com.yz.kronos.service;
 
 import com.yz.kronos.dao.JobRelationRepository;
 import com.yz.kronos.enums.YesNoEnum;
-import com.yz.kronos.model.JobRelationModel;
+import com.yz.kronos.schedule.model.JobRelationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
