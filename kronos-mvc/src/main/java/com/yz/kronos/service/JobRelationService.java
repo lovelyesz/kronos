@@ -2,7 +2,7 @@ package com.yz.kronos.service;
 
 import com.yz.kronos.dao.JobRelationRepository;
 import com.yz.kronos.enums.YesNoEnum;
-import com.yz.kronos.schedule.model.JobRelationModel;
+import com.yz.kronos.schedule.model.JobFlowModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -19,22 +19,22 @@ public class JobRelationService {
     @Autowired
     JobRelationRepository jobRelationRepository;
 
-    public List<JobRelationModel> list(JobRelationModel jobRelationModel){
-        jobRelationModel.setIsDelete(YesNoEnum.NO.code());
-        return jobRelationRepository.findAll(Example.of(jobRelationModel));
+    public List<JobFlowModel> list(JobFlowModel jobFlowModel){
+        jobFlowModel.setIsDelete(YesNoEnum.NO.code());
+        return jobRelationRepository.findAll(Example.of(jobFlowModel));
     }
 
-    public void save(JobRelationModel jobRelationModel){
-        jobRelationRepository.save(jobRelationModel);
+    public void save(JobFlowModel jobFlowModel){
+        jobRelationRepository.save(jobFlowModel);
     }
 
     public void delete(Long id){
-        final JobRelationModel jobRelationModel = get(id);
-        jobRelationModel.setIsDelete(YesNoEnum.YES.code());
-        jobRelationRepository.save(jobRelationModel);
+        final JobFlowModel jobFlowModel = get(id);
+        jobFlowModel.setIsDelete(YesNoEnum.YES.code());
+        jobRelationRepository.save(jobFlowModel);
     }
 
-    public JobRelationModel get(Long id){
+    public JobFlowModel get(Long id){
         return jobRelationRepository.findById(id).get();
     }
 

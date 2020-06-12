@@ -1,6 +1,7 @@
 package com.yz.kronos.schedule.queue;
 
 import com.yz.kronos.JobInfo;
+import com.yz.kronos.exception.JobException;
 
 /**
  * 任务信息队列，用于存放任务信息，executor进行消费
@@ -23,5 +24,13 @@ public interface JobQueue {
      * @param execId
      */
     void clear(Long execId);
+
+    /**
+     * 获取队列中的一个元素
+     * @param key
+     * @return
+     * @throws JobException
+     */
+    JobInfo lpop(String key) throws JobException;
 
 }

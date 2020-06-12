@@ -1,8 +1,11 @@
 package com.yz.kronos.controller;
 
+import com.yz.kronos.JobInfo;
+import com.yz.kronos.exception.JobException;
 import com.yz.kronos.schedule.model.CallResult;
 import com.yz.kronos.schedule.model.CallResultBuilder;
 import com.yz.kronos.schedule.model.JobInfoModel;
+import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.service.JobInfoService;
 import com.yz.kronos.service.JobRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class JobController {
     JobInfoService jobInfoService;
     @Autowired
     JobRelationService jobRelationService;
+    @Autowired
+    JobQueue jobQueue;
 
     @PostMapping(value = "/update")
     public CallResult update(JobInfoModel jobInfoModel){
@@ -49,5 +54,8 @@ public class JobController {
         return jobInfoService.get(id);
     }
 
-
+    @GetMapping(value = "/lpop")
+    public JobInfo lpop(@RequestParam(value = "key")String key) throws JobException {
+        return jobQueue.lpop(key);
+    }
 }

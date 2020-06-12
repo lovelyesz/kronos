@@ -1,6 +1,5 @@
 package com.yz.kronos.demo;
 
-import com.yz.kronos.demo.service.Demo1Service;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;

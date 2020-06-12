@@ -1,6 +1,6 @@
 package com.yz.kronos.controller;
 
-import com.yz.kronos.schedule.model.JobRelationModel;
+import com.yz.kronos.schedule.model.JobFlowModel;
 import com.yz.kronos.service.JobRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class JobRelationController {
     JobRelationService jobRelationService;
 
     @GetMapping(value = "/list")
-    public List<JobRelationModel> list(JobRelationModel jobRelationModel){
-        return jobRelationService.list(jobRelationModel);
+    public List<JobFlowModel> list(JobFlowModel jobFlowModel){
+        return jobRelationService.list(jobFlowModel);
     }
 
     @GetMapping(value = "/get/{id}")
-    public JobRelationModel get(@PathVariable Long id){
+    public JobFlowModel get(@PathVariable Long id){
         return jobRelationService.get(id);
     }
 }

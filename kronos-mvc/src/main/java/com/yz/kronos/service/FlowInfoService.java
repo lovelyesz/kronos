@@ -66,15 +66,15 @@ public class FlowInfoService {
         Long namespaceId = flowInfoModel.getNamespaceId();
         NamespaceInfoModel namespaceInfoModel = namespaceRepository.findById(namespaceId).get();
         //任务和工作流关联关系
-        List<JobRelationModel> jobRelationModelList = jobRelationRepository.findByFlowId(flowId);
-        List<Long> jobIds = jobRelationModelList.parallelStream().map(JobRelationModel::getJobId).collect(Collectors.toList());
+        List<JobFlowModel> jobFlowModelList = jobRelationRepository.findByFlowId(flowId);
+        List<Long> jobIds = jobFlowModelList.parallelStream().map(JobFlowModel::getJobId).collect(Collectors.toList());
         //任务信息
         List<JobInfoModel> jobInfoModelList = jobInfoRepository.findByIdIn(jobIds);
         Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModelList.parallelStream().collect(Collectors.toMap(JobInfoModel::getId, p -> p));
 
         List<FlowInfo.FlowElement> jobInfoList = new ArrayList<>();
-        for (int i = 0; i < jobRelationModelList.size(); i++) {
-            final JobRelationModel e = jobRelationModelList.get(i);
+        for (int i = 0; i < jobFlowModelList.size(); i++) {
+            final JobFlowModel e = jobFlowModelList.get(i);
             final FlowInfo.FlowElement flowElement = new FlowInfo.FlowElement();
             final JobInfo jobInfo = new JobInfo();
             final Long jobId = e.getJobId();
@@ -150,9 +150,9 @@ public class FlowInfoService {
         flowInfoModel.setIsDelete(YesNoEnum.NO.code());
         final Page<FlowInfoModel> flowInfoModelPage = flowInfoRepository.findAll(Example.of(flowInfoModel), PageRequest.of(page, limit,Sort.by("id")));
         final Set<Long> flowIds = flowInfoModelPage.map(FlowInfoModel::getId).stream().collect(Collectors.toSet());
-        final List<JobRelationModel> relationModels = jobRelationRepository.findByFlowIdIn(flowIds);
+        final List<JobFlowModel> relationModels = jobRelationRepository.findByFlowIdIn(flowIds);
 
-        final Set<Long> jobIds = relationModels.parallelStream().map(JobRelationModel::getJobId).collect(Collectors.toSet());
+        final Set<Long> jobIds = relationModels.parallelStream().map(JobFlowModel::getJobId).collect(Collectors.toSet());
         final List<JobInfoModel> jobInfoModels = jobInfoRepository.findByIdIn(jobIds);
         final Map<Long, JobInfoModel> jobInfoModelMap = jobInfoModels.parallelStream()
                 .collect(Collectors.toMap(JobInfoModel::getId, p -> p));

@@ -10,8 +10,8 @@ import javax.persistence.*;
  **/
 @Data
 @Entity
-@Table(name = "job_relation")
-public class JobRelationModel {
+@Table(name = "job_flow")
+public class JobFlowModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

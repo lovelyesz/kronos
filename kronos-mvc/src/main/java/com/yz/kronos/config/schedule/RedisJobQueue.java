@@ -3,6 +3,7 @@ package com.yz.kronos.config.schedule;
 import com.alibaba.fastjson.JSONObject;
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
+import com.yz.kronos.exception.JobException;
 import com.yz.kronos.schedule.queue.JobQueue;
 import org.redisson.api.RBatch;
 import org.redisson.api.RBlockingQueueAsync;
@@ -52,6 +53,21 @@ public class RedisJobQueue implements JobQueue {
     @Override
     public void clear(Long execId) {
         redissonClient.getBlockingQueue(key(execId)).clear();
+    }
+
+    /**
+     * 获取队列中的一个元素
+     *
+     * @return
+     * @throws JobException
+     */
+    @Override
+    public JobInfo lpop(String key) throws JobException {
+        Object cache = redissonClient.getBlockingQueue(key).poll();
+        if (cache==null){
+            throw new JobException("not find cache form queue");
+        }
+        return JSONObject.parseObject(cache.toString(),JobInfo.class);
     }
 
 
