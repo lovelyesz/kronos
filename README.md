@@ -3,8 +3,8 @@
 - VOLUME /tmp
 - ADD statement-task-starter.tar.gz /
 
-#Kronos设计方案
-    Kronos是基于k8s-api的定时任务系统，开发人员需要对kubernetes和docker有基本的了解。
+# Kronos设计方案
+    Kronos是基于k8s的定时任务系统，开发人员需要对kubernetes和docker有基本的了解。
 设计Kronos的初衷是为了能够调度管理任务，维护任务之间的依赖关系形成一个完整的工作流，并且能够针对个别任务做分片扩容。
 那么使用K8S需要解决的问题如下：
 
