@@ -1,11 +1,10 @@
-package com.yz.kronos.spring.redis;
+package com.yz.kronos.config.schedule;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.schedule.queue.JobQueue;
 import org.redisson.api.RBatch;
-import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RBlockingQueueAsync;
 import org.redisson.api.RedissonClient;
 

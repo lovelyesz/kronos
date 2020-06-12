@@ -1,7 +1,7 @@
 package com.yz.kronos.quartz;
 
 import com.yz.kronos.dao.FlowInfoRepository;
-import com.yz.kronos.schedule.enu.FlowState;
+import com.yz.kronos.schedule.enu.FlowStatus;
 import com.yz.kronos.schedule.model.FlowInfoModel;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
@@ -28,9 +28,9 @@ public class SchedulerFactory {
         this.scheduler = scheduler;
         scheduler.start();
         //可执行的工作流 list
-        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByStatus(FlowState.RUNNABLE.code());
+        List<FlowInfoModel> flowInfoModelList = flowInfoRepository.findByStatus(FlowStatus.RUNNABLE.code());
         flowInfoModelList.forEach(flowInfoModel-> {
-            if (!FlowState.RUNNABLE.code().equals(flowInfoModel.getStatus())){
+            if (!FlowStatus.RUNNABLE.code().equals(flowInfoModel.getStatus())){
                 return;
             }
             try {

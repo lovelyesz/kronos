@@ -1,7 +1,6 @@
-package com.yz.kronos.spring;
+package com.yz.kronos.config.schedule;
 
 import com.yz.kronos.KubernetesConfig;
-import com.yz.kronos.message.MessageHandler;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
 import com.yz.kronos.schedule.flow.SimpleFlowManage;
 import com.yz.kronos.schedule.flow.FlowInterceptor;
@@ -14,9 +13,10 @@ import com.yz.kronos.schedule.queue.JobQueue;
 import com.yz.kronos.schedule.repository.DefaultJobExecuteRepository;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
-import com.yz.kronos.spring.redis.RedisJobProcessSynchronizer;
-import com.yz.kronos.spring.redis.RedisJobQueue;
 import org.redisson.api.RedissonClient;
+import org.redisson.spring.starter.RedissonAutoConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -29,8 +29,12 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019-12-23
  **/
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(RedissonAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "kronos",name = "enable",havingValue = "true",matchIfMissing = true)
-public class KronosAutoConfiguration {
+public class ScheduleConfiguration {
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * kronos配置
@@ -44,12 +48,10 @@ public class KronosAutoConfiguration {
 
     /**
      * 任务信息队列
-     * @param redissonClient
      * @return
      */
     @Bean
-    @ConditionalOnBean(RedissonClient.class)
-    public JobQueue jobQueue(RedissonClient redissonClient){
+    public JobQueue jobQueue(){
         return new RedisJobQueue(redissonClient);
     }
 
@@ -59,11 +61,9 @@ public class KronosAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public JobSynchronousEventHandler jobSynchronousEventHandler(JobProcessSynchronizer jobProcessSynchronizer,
-                                                                 MessageHandler messageHandler){
-        final JobSynchronousEventHandler jobSynchronousEventHandler = new JobSynchronousEventHandler();
+    public JobSynchronousEventHandler jobSynchronousEventHandler(JobProcessSynchronizer jobProcessSynchronizer){
+        JobSynchronousEventHandler jobSynchronousEventHandler = new JobSynchronousEventHandler();
         jobSynchronousEventHandler.setJobProcessSynchronizer(jobProcessSynchronizer);
-        jobSynchronousEventHandler.setAlertHandler(messageHandler);
         return jobSynchronousEventHandler;
     }
 
@@ -104,8 +104,7 @@ public class KronosAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(RedissonClient.class)
-    public JobProcessSynchronizer jobProcessSynchronizer(RedissonClient redissonClient){
+    public JobProcessSynchronizer jobProcessSynchronizer(){
         return new RedisJobProcessSynchronizer(redissonClient);
     }
 

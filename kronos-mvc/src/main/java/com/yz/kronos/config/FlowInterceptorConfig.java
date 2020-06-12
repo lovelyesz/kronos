@@ -1,7 +1,7 @@
 package com.yz.kronos.config;
 
 import com.yz.kronos.dao.FlowInfoRepository;
-import com.yz.kronos.schedule.enu.FlowState;
+import com.yz.kronos.schedule.enu.FlowStatus;
 import com.yz.kronos.schedule.model.FlowInfoModel;
 import com.yz.kronos.schedule.flow.FlowInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,6 @@ public class FlowInterceptorConfig implements FlowInterceptor {
     @Override
     public Boolean intercept(Long flowId) {
         final FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).orElseGet(FlowInfoModel::new);
-        return !FlowState.RUNNING.code().equals(flowInfoModel.getStatus());
+        return !FlowStatus.RUNNING.code().equals(flowInfoModel.getStatus());
     }
 }

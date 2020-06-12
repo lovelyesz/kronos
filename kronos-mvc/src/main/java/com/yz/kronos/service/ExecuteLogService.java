@@ -4,13 +4,12 @@ import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.dao.ExecuteLogRepository;
 import com.yz.kronos.dao.FlowInfoRepository;
 import com.yz.kronos.dao.JobInfoRepository;
-import com.yz.kronos.schedule.enu.JobState;
+import com.yz.kronos.schedule.enu.JobStatus;
 import com.yz.kronos.schedule.model.ExecuteLogModel;
 import com.yz.kronos.schedule.model.FlowInfoModel;
 import com.yz.kronos.schedule.model.JobInfoModel;
 import com.yz.kronos.schedule.model.PageResult;
 import com.yz.kronos.schedule.repository.JobExecuteRepository;
-import io.fabric8.kubernetes.api.model.batch.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +34,7 @@ public class ExecuteLogService implements JobExecuteRepository {
     @Autowired
     FlowInfoRepository flowInfoRepository;
 
-    public ExecuteLogModel updateProcess(Long id, JobStatus status){
+    public ExecuteLogModel updateProcess(Long id, io.fabric8.kubernetes.api.model.batch.JobStatus status){
         final ExecuteLogModel executeLogModel = get(id);
         executeLogModel.setId(id);
         executeLogModel.setFinishTime(new Date());
@@ -45,21 +44,21 @@ public class ExecuteLogService implements JobExecuteRepository {
         executeLogModel.setFailedCount(failed);
         executeLogModel.setSucceedCount(succeed);
         executeLogModel.setActiveCount(active);
-        executeLogModel.setStatus(JobState.RUNNING.code());
-        executeLogModel.setRemark(JobState.RUNNING.desc());
+        executeLogModel.setStatus(JobStatus.RUNNING.code());
+        executeLogModel.setRemark(JobStatus.RUNNING.desc());
         final Integer shareTotal = executeLogModel.getShareTotal();
         if (shareTotal.equals(succeed)){
-            executeLogModel.setStatus(JobState.SUCCESS.code());
-            executeLogModel.setRemark(JobState.SUCCESS.desc());
+            executeLogModel.setStatus(JobStatus.SUCCESS.code());
+            executeLogModel.setRemark(JobStatus.SUCCESS.desc());
         }
         if (failed>0){
-            executeLogModel.setStatus(JobState.FAIL.code());
-            executeLogModel.setRemark(JobState.FAIL.desc());
+            executeLogModel.setStatus(JobStatus.FAIL.code());
+            executeLogModel.setRemark(JobStatus.FAIL.desc());
         }
         return executeLogRepository.save(executeLogModel);
     }
 
-    public int updateStatus(Long id,JobState state){
+    public int updateStatus(Long id, JobStatus state){
         return executeLogRepository.updateStatus(new Date(),state.code(),state.desc(),id);
     }
 
@@ -67,8 +66,8 @@ public class ExecuteLogService implements JobExecuteRepository {
         return executeLogRepository.findById(execId).get();
     }
 
-    public List<ExecuteLogModel> findByFlowIdAndState(Long flowId, JobState... jobState){
-        return executeLogRepository.findByFlowIdAndStatusIn(flowId, Arrays.stream(jobState).map(JobState::code).collect(Collectors.toList()));
+    public List<ExecuteLogModel> findByFlowIdAndState(Long flowId, JobStatus... jobStatus){
+        return executeLogRepository.findByFlowIdAndStatusIn(flowId, Arrays.stream(jobStatus).map(JobStatus::code).collect(Collectors.toList()));
     }
 
     public List<ExecuteLogModel> findByBatchNo(String batchNo){
@@ -127,8 +126,8 @@ public class ExecuteLogService implements JobExecuteRepository {
         executeLogModel.setCreateTime(new Date());
         executeLogModel.setFlowId(flowId);
         executeLogModel.setJobId(jobId);
-        executeLogModel.setStatus(JobState.INIT.code());
-        executeLogModel.setRemark(JobState.INIT.desc());
+        executeLogModel.setStatus(JobStatus.INIT.code());
+        executeLogModel.setRemark(JobStatus.INIT.desc());
         executeLogModel.setShareTotal(shareTotal);
         executeLogModel.setActiveCount(0);
         executeLogModel.setSucceedCount(0);

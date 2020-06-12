@@ -2,20 +2,16 @@ server:
   port: 12710
   servlet:
     context-path: /
+
 spring:
   datasource:
-    druid:
-      initial-size: 1
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      min-idle: 5
-      max-active: 50
-      min-evictable-idle-time-millis: 30000
-      max-evictable-idle-time-millis: 60000
-      username: root
-      password: root
-      url: jdbc:mysql://10.200.46.238:3306/kronos?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/kronos?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
   jpa:
     show-sql: true
+#    generate-ddl: true
   mail:
     host: smtp.yunzongnet.com
     username: zhifu@yunzongnet.com
@@ -24,30 +20,16 @@ spring:
     protocol: smtps
   profiles:
     active: dev
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
-redisson:
-  sentinel:
-    master-name: paygate
-    sentinel-addresses:
-      - redis://ds.redis3-1.yunzong:26379
-      - redis://ds.redis3-2.yunzong:26379
-      - redis://ds.redis3-3.yunzong:26379
 kronos:
   enable: true
-  service-api: http://10.200.46.239:8080
+  service-api: http://123.57.137.193:6443
   image-pull-policy: IfNotPresent
   restart-policy: Never
   group-name: batch
   api-version: v1
   log-path: /data/application/logs/kronos/
   resync-period-in-millis: 60000
-
-alert:
-  email:
-    receiver: shanchong@yunzongnet.com
-    host: smtp.yunzongnet.com
-    form: zhifu@yunzongnet.com
-    username: zhifu@yunzongnet.com
-    password: 4HwxfI7b
-  ding:
-    token: 11eda069fb8e3af56e8cb50e0bf5e17bef5f5af9006d035a8b368035acb41d3c

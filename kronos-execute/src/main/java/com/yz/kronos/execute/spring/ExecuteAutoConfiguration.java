@@ -5,7 +5,6 @@ import com.yz.kronos.JobInfo;
 import com.yz.kronos.execute.ExecuteErrorHandle;
 import com.yz.kronos.execute.IsolatedJavaJob;
 import com.yz.kronos.execute.JobInfoQueue;
-import com.yz.kronos.message.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
@@ -24,14 +23,12 @@ public class ExecuteAutoConfiguration implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
-        MessageHandler alertHandler = null;
         String execId = System.getenv(ExecuteConstant.KRONOS_EXECUTE_ID);
         log.info("kronos executor start... execId:{}",execId);
         int index = 0;
         int shareTotal = 0;
         Object bean = null;
         try {
-            alertHandler = applicationContext.getBean(MessageHandler.class);
             JobInfo jobInfo = applicationContext.getBean(JobInfoQueue.class).lpop();
             log.info("kronos executor job info {}",jobInfo);
             //分片索引
@@ -44,9 +41,6 @@ public class ExecuteAutoConfiguration implements ApplicationContextAware {
         }catch (Exception e){
             e.printStackTrace();
             log.error("kronos executor job info is error",e);
-            if (alertHandler!=null){
-                alertHandler.handle("[Kronos系统异常告警]","kronos executor job info is error");
-            }
         }
         try {
             if (bean==null){
@@ -60,9 +54,6 @@ public class ExecuteAutoConfiguration implements ApplicationContextAware {
                 log.warn("kronos executor job execute fail start error handler");
                 ExecuteErrorHandle errorHandle = (ExecuteErrorHandle) bean;
                 errorHandle.errorHandle(index,shareTotal,execId,e);
-            }
-            if (alertHandler!=null){
-                alertHandler.handle("[Kronos系统异常告警]","kronos executor job execute fail");
             }
         }
         System.exit(0);

@@ -1,4 +1,4 @@
-package com.yz.kronos.spring.redis;
+package com.yz.kronos.config.schedule;
 
 import com.yz.kronos.schedule.synchronizer.JobProcessSynchronizer;
 import org.redisson.api.RCountDownLatch;

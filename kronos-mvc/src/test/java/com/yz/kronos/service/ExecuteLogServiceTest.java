@@ -1,6 +1,6 @@
 package com.yz.kronos.service;
 
-import com.yz.kronos.schedule.enu.JobState;
+import com.yz.kronos.schedule.enu.JobStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,6 @@ public class ExecuteLogServiceTest {
 
     @Test
     public void updateStatus() {
-        executeLogService.updateStatus(1L, JobState.FAIL);
+        executeLogService.updateStatus(1L, JobStatus.FAIL);
     }
 }

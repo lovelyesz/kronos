@@ -1,12 +1,10 @@
 package com.yz.kronos.config;
 
 import com.yz.kronos.ExecuteConstant;
-import com.yz.kronos.schedule.enu.JobState;
-import com.yz.kronos.schedule.model.ExecuteLogModel;
+import com.yz.kronos.schedule.enu.JobStatus;
 import com.yz.kronos.service.ExecuteLogService;
 import com.yz.kronos.util.ExecuteUtil;
 import io.fabric8.kubernetes.api.model.batch.Job;
-import io.fabric8.kubernetes.api.model.batch.JobStatus;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,7 @@ public class ExecuteLogEventHandler implements ResourceEventHandler<Job> {
      */
     @Override
     public void onUpdate(Job oldObj, Job newObj) {
-        JobStatus status = newObj.getStatus();
+        io.fabric8.kubernetes.api.model.batch.JobStatus status = newObj.getStatus();
         Map<String, String> labels = newObj.getMetadata().getLabels();
         final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
         executeLogService.updateProcess(Long.valueOf(execId), status);
@@ -69,6 +67,6 @@ public class ExecuteLogEventHandler implements ResourceEventHandler<Job> {
         Map<String, String> labels = obj.getMetadata().getLabels();
         final String execId = labels.get(ExecuteConstant.KRONOS_EXECUTE_ID);
         final Long execLogId = ExecuteUtil.getExecLogId(execId);
-        executeLogService.updateStatus(execLogId, JobState.FAIL);
+        executeLogService.updateStatus(execLogId, JobStatus.FAIL);
     }
 }

@@ -6,12 +6,12 @@ import com.yz.kronos.CallResultConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.KubernetesConfig;
 import com.yz.kronos.dao.*;
-import com.yz.kronos.schedule.enu.FlowState;
-import com.yz.kronos.schedule.enu.JobState;
+import com.yz.kronos.schedule.enu.FlowStatus;
+import com.yz.kronos.schedule.enu.JobStatus;
 import com.yz.kronos.enums.YesNoEnum;
 import com.yz.kronos.schedule.enu.ImagePillPolicy;
 import com.yz.kronos.schedule.flow.AbstractFlowManage;
-import com.yz.kronos.schedule.model.FlowInfo;
+import com.yz.kronos.schedule.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -54,13 +54,13 @@ public class FlowInfoService {
     @Async
     public void schedule(Long flowId) {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
-        if (!FlowState.RUNNABLE.code().equals(flowInfoModel.getStatus())) {
+        if (!FlowStatus.RUNNABLE.code().equals(flowInfoModel.getStatus())) {
             log.error("kronos flow execute fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
             return;
         }
         final String batchNo = UUID.randomUUID().toString().replaceAll("-","");
 
-        flowInfoModel.setStatus(FlowState.RUNNING.code());
+        flowInfoModel.setStatus(FlowStatus.RUNNING.code());
         flowInfoModel.setLastBatchNo(batchNo);
         flowInfoRepository.save(flowInfoModel);
         Long namespaceId = flowInfoModel.getNamespaceId();
@@ -97,7 +97,7 @@ public class FlowInfoService {
         flowInfo.setFlowId(flowId);
         flowManage.schedule(flowInfo);
 
-        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
+        flowInfoModel.setStatus(FlowStatus.RUNNABLE.code());
         flowInfoRepository.save(flowInfoModel);
 
     }
@@ -107,18 +107,18 @@ public class FlowInfoService {
         FlowInfoModel flowInfoModel = flowInfoRepository.findById(flowId).get();
         log.warn("kronos flow is stopping flow:{}",flowId);
         final Integer state = flowInfoModel.getStatus();
-        if (!FlowState.RUNNING.code().equals(state)){
+        if (!FlowStatus.RUNNING.code().equals(state)){
             log.error("kronos flow stop fail , flow {} status is {}", flowId, flowInfoModel.getStatus());
             return;
         }
-        flowInfoModel.setStatus(FlowState.RUNNABLE.code());
+        flowInfoModel.setStatus(FlowStatus.RUNNABLE.code());
         //更新工作流状态
         flowInfoRepository.save(flowInfoModel);
 
         List<ExecuteLogModel> executeLogModelList =
                 executeLogRepository.findByFlowIdAndStatusIn(flowId,
-                        Lists.newArrayList(JobState.RUNNING,JobState.INIT).stream()
-                .map(JobState::code).collect(Collectors.toList()));
+                        Lists.newArrayList(JobStatus.RUNNING, JobStatus.INIT).stream()
+                .map(JobStatus::code).collect(Collectors.toList()));
 
         if (executeLogModelList.isEmpty()){
             log.error("kronos flow not find status is 0 or 1 of execute log flowId:{}",flowId);
@@ -129,7 +129,7 @@ public class FlowInfoService {
         flowManage.shutdown(execIds,flowId);
 
         executeLogModelList.forEach(executeLogModel->{
-            executeLogRepository.updateStatus(new Date(),JobState.SHUTDOWN.code(),JobState.SHUTDOWN.desc(),
+            executeLogRepository.updateStatus(new Date(), JobStatus.SHUTDOWN.code(), JobStatus.SHUTDOWN.desc(),
                     executeLogModel.getId());
         });
 

@@ -4,7 +4,7 @@ package com.yz.kronos.schedule.enu;
  * @author shanchong
  * @date 2019-11-12
  **/
-public enum JobState {
+public enum JobStatus {
 
     INIT(0,"任务初始化"),
     RUNNING(1,"正在执行"),
@@ -16,7 +16,7 @@ public enum JobState {
     int code;
     String desc;
 
-    JobState(int code,String desc){
+    JobStatus(int code, String desc){
         this.code = code;
         this.desc = desc;
     }
@@ -30,7 +30,7 @@ public enum JobState {
     }
 
     public static void main(String[] args) {
-        final JobState success = valueOf("SUCCESS");
+        final JobStatus success = valueOf("SUCCESS");
         System.out.println(success);
     }
 }
