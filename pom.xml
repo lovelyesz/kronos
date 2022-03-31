@@ -15,7 +15,7 @@
         <module>kronos-execute</module>
     </modules>
     <properties>
-        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring-boot.version>2.5.12</spring-boot.version>
     </properties>
     <dependencyManagement>
         <dependencies>
