@@ -16,7 +16,7 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
-            <version>4.6.3</version><!-- 对应k8s的1.10.6版本-->
+            <version>4.7.2</version><!-- 对应k8s的1.10.6版本-->
             <exclusions>
                 <exclusion>
                     <groupId>org.yaml</groupId>
